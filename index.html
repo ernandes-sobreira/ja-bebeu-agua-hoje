@@ -1,118 +1,113 @@
-<!doctype html> 
+<!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Já bebeu água hoje?</title>
-  <meta name="theme-color" content="#06b6d4" />
+  <meta name="theme-color" content="#06b6d4"/>
+
   <style>
     :root{
       --bg1:#e6fbff;
       --bg2:#c7f6ff;
-      --card: rgba(255,255,255,.72);
-      --stroke: rgba(2, 132, 199, .18);
+      --card: rgba(255,255,255,.78);
+      --stroke: rgba(2,132,199,.18);
       --text:#073b4c;
       --muted:#3b6a7a;
       --accent:#06b6d4;
       --accent2:#0ea5e9;
       --good:#16a34a;
       --bad:#ef4444;
-      --shadow: 0 14px 40px rgba(2, 132, 199, .12);
+      --shadow: 0 14px 40px rgba(2,132,199,.20);
       --radius: 18px;
     }
+
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--text);
-      background: radial-gradient(1200px 700px at 20% 0%, var(--bg2), transparent 60%),
-                  radial-gradient(1000px 600px at 90% 10%, #b8fff0, transparent 55%),
-                  linear-gradient(180deg, var(--bg1), #ffffff 60%);
+      background: radial-gradient(1100px 700px at 20% 10%, #ffffff 0%, var(--bg1) 45%, var(--bg2) 100%);
       min-height:100vh;
     }
-    .wrap{
-      max-width: 980px;
-      margin: 0 auto;
-      padding: 18px 14px 42px;
-    }
+
     header{
+      position:sticky;
+      top:0;
+      z-index:20;
+      background: rgba(255,255,255,.70);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stroke);
+    }
+
+    .topbar{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px 14px;
       display:flex;
-      gap:12px;
       align-items:center;
       justify-content:space-between;
-      padding: 12px 12px;
-      position: sticky;
-      top: 0;
-      backdrop-filter: blur(10px);
-      background: linear-gradient(180deg, rgba(230,251,255,.9), rgba(230,251,255,.55));
-      border-bottom: 1px solid var(--stroke);
-      z-index: 10;
+      gap: 12px;
+      flex-wrap: wrap; /* <- isso conserta o “fora de esquadro” no celular */
     }
+
     .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width: 220px;
+      display:flex; align-items:center; gap:10px;
+      min-width: 240px;
     }
-    .logo{
-      width: 38px; height: 38px;
-      border-radius: 14px;
-      background: radial-gradient(circle at 30% 30%, #ffffff 0 30%, #a5f3fc 31% 55%, #22d3ee 56% 100%);
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(34,211,238,.25);
-      position:relative;
-      overflow:hidden;
+    .drop{
+      width:32px;height:32px;border-radius:12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 25px rgba(14,165,233,.35);
+      display:grid; place-items:center;
+      color:#fff; font-weight:800;
     }
-    .logo::after{
-      content:"💧";
-      position:absolute;
-      inset:0;
-      display:grid;
-      place-items:center;
-      font-size: 20px;
-      filter: drop-shadow(0 8px 10px rgba(14,165,233,.25));
+    .brand h1{
+      font-size: 16px; margin:0; line-height:1.1;
     }
-    h1{
-      margin:0;
-      font-size: 16px;
-      letter-spacing:.2px;
-      line-height: 1.05;
+    .brand small{color:var(--muted)}
+    .statusbar{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+      justify-content:flex-end;
+      margin-left:auto;
     }
-    .sub{
-      margin: 2px 0 0;
-      color: var(--muted);
-      font-size: 12px;
-    }
-    .top-actions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .pill{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      padding: 8px 10px;
+    .chip{
+      display:flex; align-items:center; gap:8px;
+      padding:8px 10px;
       border-radius: 999px;
-      background: rgba(255,255,255,.65);
+      background: rgba(255,255,255,.85);
       border: 1px solid var(--stroke);
-      box-shadow: 0 10px 24px rgba(2,132,199,.08);
+      box-shadow: 0 10px 25px rgba(2,132,199,.10);
       font-size: 12px;
-      color: var(--muted);
       white-space: nowrap;
+      max-width: 100%;
     }
-    .pill b{ color: var(--text); font-weight: 700; }
+    .chip b{font-weight:800}
+    .chip .mono{font-variant-numeric: tabular-nums}
+    .chip.ok{border-color: rgba(22,163,74,.25)}
+    .chip.warn{border-color: rgba(239,68,68,.25)}
+    .chip .dot{
+      width:8px;height:8px;border-radius:50%;
+      background: var(--accent2);
+      box-shadow: 0 0 0 4px rgba(14,165,233,.18);
+    }
+
+    main{
+      max-width:1100px;
+      margin: 18px auto 34px;
+      padding: 0 14px;
+    }
+
     .grid{
       display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 14px;
-      margin-top: 14px;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: start;
     }
-    @media (max-width: 900px){
-      .grid{ grid-template-columns: 1fr; }
-      header{ gap: 10px; }
-      .brand{ min-width: unset; }
+    @media (max-width: 920px){
+      .grid{grid-template-columns: 1fr;}
     }
+
     .card{
       background: var(--card);
       border: 1px solid var(--stroke);
@@ -120,884 +115,1181 @@
       box-shadow: var(--shadow);
       padding: 14px;
     }
-    .row{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items:flex-end;
-    }
-    label{
-      display:block;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
+
+    .row{display:flex; gap:10px; flex-wrap:wrap}
+    label{font-size:12px;color:var(--muted)}
     input{
-      width: 100%;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(2,132,199,.18);
-      background: rgba(255,255,255,.78);
+      width:100%;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.86);
+      border-radius: 12px;
+      padding: 10px 12px;
       outline: none;
       font-size: 14px;
       color: var(--text);
     }
-    input:focus{
-      border-color: rgba(6,182,212,.65);
-      box-shadow: 0 0 0 4px rgba(34,211,238,.18);
-    }
-    .field{
-      flex: 1 1 190px;
-      min-width: 160px;
-    }
-    .btn{
+    input:focus{border-color: rgba(14,165,233,.45); box-shadow: 0 0 0 4px rgba(14,165,233,.15)}
+    .col{flex: 1; min-width: 180px}
+
+    button{
       border: 0;
-      padding: 12px 12px;
-      border-radius: 14px;
-      background: linear-gradient(180deg, var(--accent), var(--accent2));
-      color: #003544;
-      font-weight: 800;
-      cursor:pointer;
-      box-shadow: 0 14px 28px rgba(14,165,233,.18);
-      transition: transform .08s ease, filter .12s ease;
-      user-select:none;
-      min-width: 140px;
-    }
-    .btn:active{ transform: translateY(1px) scale(.99); filter:saturate(1.15); }
-    .btn.secondary{
-      background: rgba(255,255,255,.7);
-      border: 1px solid var(--stroke);
-      box-shadow: 0 10px 24px rgba(2,132,199,.08);
-      color: var(--text);
-      font-weight: 750;
-      min-width: 120px;
-    }
-    .btn.danger{
-      background: rgba(239,68,68,.12);
-      border: 1px solid rgba(239,68,68,.25);
-      color: #7a0b0b;
-      box-shadow: none;
-    }
-    .btn.small{
-      padding: 10px 10px;
-      border-radius: 12px;
-      min-width: unset;
-      font-weight: 800;
-    }
-    .quick{
-      display:flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .chip{
       padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 800;
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--stroke);
+      color: var(--text);
+      transition: transform .05s ease, filter .15s ease;
+    }
+    button:active{transform: scale(.98)}
+    button.primary{
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      color: #fff;
+      box-shadow: 0 12px 28px rgba(14,165,233,.30);
+    }
+    button.danger{
+      background: rgba(239,68,68,.10);
+      border-color: rgba(239,68,68,.25);
+      color: #991b1b;
+    }
+    button.ghost{
+      background: rgba(255,255,255,.55);
+    }
+
+    .big{
+      font-size: 34px;
+      font-weight: 900;
+      margin: 10px 0 4px;
+      letter-spacing: -0.5px;
+    }
+    .sub{
+      display:flex; gap:8px; flex-wrap:wrap;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+    .pill{
+      padding: 6px 10px;
       border-radius: 999px;
-      border: 1px solid rgba(2,132,199,.18);
+      border: 1px solid var(--stroke);
       background: rgba(255,255,255,.65);
-      cursor:pointer;
       font-weight: 800;
       color: var(--text);
-      box-shadow: 0 10px 24px rgba(2,132,199,.07);
-      user-select:none;
-    }
-    .chip:active{ transform: translateY(1px); }
-    .muted{
-      color: var(--muted);
       font-size: 12px;
     }
-    .big{
-      font-size: 28px;
-      margin: 10px 0 4px;
-      font-weight: 950;
-      letter-spacing: -.4px;
-    }
-    .kpi{
-      display:flex;
-      gap: 10px;
-      flex-wrap:wrap;
-      margin-top: 10px;
-    }
-    .kpi .mini{
-      flex:1 1 140px;
-      padding: 10px 12px;
-      border-radius: 16px;
-      border: 1px solid var(--stroke);
-      background: rgba(255,255,255,.6);
-    }
-    .mini .t{ font-size: 12px; color: var(--muted); }
-    .mini .v{ font-size: 16px; font-weight: 900; margin-top: 2px; }
-    .cup-area{
+    .pill.good{border-color: rgba(22,163,74,.25); color: #065f46}
+    .pill.bad{border-color: rgba(239,68,68,.25); color: #7f1d1d}
+
+    .cups{
       display:grid;
-      grid-template-columns: .9fr 1.1fr;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 10px;
+    }
+    @media (max-width: 520px){
+      .cups{grid-template-columns: repeat(2, minmax(0,1fr));}
+    }
+
+    .tankWrap{
+      display:grid;
+      grid-template-columns: 1fr 1.1fr;
       gap: 12px;
-      align-items:center;
-      margin-top: 12px;
+      align-items: stretch;
     }
-    @media (max-width: 680px){
-      .cup-area{ grid-template-columns: 1fr; }
+    @media (max-width: 720px){
+      .tankWrap{grid-template-columns: 1fr;}
     }
-    .cup{
-      width: 100%;
-      max-width: 260px;
-      margin: 0 auto;
-      aspect-ratio: 2/3;
-      border-radius: 26px;
-      border: 2px solid rgba(2,132,199,.20);
-      background: rgba(255,255,255,.45);
-      position:relative;
+
+    .tank{
+      position: relative;
+      height: 360px;
+      border-radius: 18px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.60);
       overflow:hidden;
-      box-shadow: 0 16px 38px rgba(2,132,199,.10);
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      padding: 12px;
     }
     .water{
-      position:absolute;
-      left:0; right:0;
-      bottom:0;
+      width: 100%;
       height: 0%;
-      background: linear-gradient(180deg, rgba(34,211,238,.55), rgba(14,165,233,.70));
-      transition: height .35s ease;
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(34,211,238,.95), rgba(14,165,233,.85));
+      box-shadow: inset 0 20px 30px rgba(255,255,255,.25);
+      transition: height .25s ease;
+      position: relative;
+      overflow:hidden;
     }
-    .water::before{
+    .water::after{
       content:"";
       position:absolute;
-      left:-20%;
-      top:-16px;
-      width: 140%;
-      height: 34px;
-      background: radial-gradient(circle at 20% 60%, rgba(255,255,255,.85), rgba(255,255,255,0) 60%),
-                  radial-gradient(circle at 60% 40%, rgba(255,255,255,.65), rgba(255,255,255,0) 60%),
-                  radial-gradient(circle at 85% 70%, rgba(255,255,255,.75), rgba(255,255,255,0) 60%);
-      opacity: .9;
-      filter: blur(.2px);
-      transform: rotate(1deg);
+      left:-30%;
+      top: -22px;
+      width:160%;
+      height: 46px;
+      background: radial-gradient(circle at 20% 50%, rgba(255,255,255,.65), rgba(255,255,255,0) 60%);
+      opacity:.55;
+      filter: blur(1px);
+      animation: wave 4s linear infinite;
     }
-    .cupMark{
+    @keyframes wave{
+      0%{transform: translateX(0)}
+      100%{transform: translateX(30%)}
+    }
+
+    .tankTopLabels{
       position:absolute;
-      inset: 10px 10px auto 10px;
-      display:flex;
-      justify-content:space-between;
-      color: rgba(7,59,76,.55);
-      font-weight: 800;
+      left:12px; right:12px;
+      top:10px;
+      display:flex; justify-content:space-between;
       font-size: 11px;
+      color: var(--muted);
+      opacity:.9;
       pointer-events:none;
     }
-    .cupLabel{
-      text-align:center;
-      margin-top: 8px;
+
+    .miniBox{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .hint{
       font-size: 12px;
       color: var(--muted);
+      margin-top: 8px;
     }
+
     canvas{
       width: 100%;
-      height: 260px;
-      display:block;
+      height: 240px;
       background: rgba(255,255,255,.55);
       border: 1px solid var(--stroke);
-      border-radius: 16px;
+      border-radius: 14px;
     }
-    .note{
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
-      padding: 10px 12px;
-      border-radius: 16px;
-      background: rgba(255,255,255,.58);
+
+    .list{
       border: 1px solid var(--stroke);
-      margin-top: 10px;
+      background: rgba(255,255,255,.55);
+      border-radius: 14px;
+      overflow:hidden;
     }
-    .note .emoji{ font-size: 18px; margin-top: 2px; }
-    .note .txt{ font-size: 13px; color: var(--text); }
+    .listHeader{
+      display:flex; justify-content:space-between; align-items:center;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--stroke);
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+    .listBody{
+      max-height: 220px;
+      overflow:auto;
+    }
+    .item{
+      display:flex; justify-content:space-between; align-items:center;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(2,132,199,.10);
+      font-size: 13px;
+    }
+    .item:last-child{border-bottom:0}
+    .item b{font-weight:900}
+    .item small{color:var(--muted)}
+    .badge{
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-weight: 900;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.70);
+      font-size: 12px;
+    }
+
+    /* TOAST (popup) — agora fica visível MESMO */
     .toast{
       position: fixed;
       left: 50%;
-      bottom: 18px;
-      transform: translateX(-50%);
-      max-width: min(720px, calc(100% - 24px));
-      background: rgba(255,255,255,.86);
-      border: 1px solid rgba(2,132,199,.18);
+      top: 16px;
+      transform: translateX(-50%) translateY(-10px);
+      z-index: 9999;
+      width: min(720px, calc(100% - 24px));
+      background: rgba(7,59,76,.92);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.12);
       border-radius: 16px;
-      box-shadow: 0 18px 50px rgba(2,132,199,.18);
-      padding: 12px 12px;
-      display:none;
-      z-index: 50;
-      backdrop-filter: blur(10px);
+      box-shadow: 0 18px 50px rgba(0,0,0,.25);
+      padding: 14px 14px 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease, transform .18s ease;
     }
-    .toast .trow{
-      display:flex;
-      gap: 10px;
-      align-items:flex-start;
+    .toast.show{
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
-    .toast .close{
-      margin-left:auto;
-      cursor:pointer;
-      border:0;
-      background: transparent;
-      font-size: 18px;
-      line-height: 1;
-      opacity:.7;
+    .toast .t1{font-weight: 900; font-size: 14px; margin:0 0 4px}
+    .toast .t2{opacity:.92; font-size: 13px; margin:0}
+    .toast .bar{
+      height: 3px;
+      margin-top: 10px;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      width: 100%;
+      transform-origin: left;
+      animation: shrink 4.2s linear forwards;
     }
-    .toast .close:active{ transform: translateY(1px); }
-    .toast .title{
-      font-weight: 950;
-      margin-bottom: 3px;
+    @keyframes shrink{
+      from{transform: scaleX(1)}
+      to{transform: scaleX(0)}
     }
-    .toast .body{
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.35;
-    }
-    /* Confetti */
-    .confetti{
+
+    /* FESTA */
+    .overlay{
       position: fixed;
-      inset: 0;
-      pointer-events:none;
-      overflow:hidden;
-      z-index: 60;
+      inset:0;
+      background: rgba(0,0,0,.45);
       display:none;
-    }
-    .confetti i{
-      position:absolute;
-      top:-20px;
-      width: 10px;
-      height: 14px;
-      opacity: .95;
-      border-radius: 4px;
-      animation: fall linear forwards;
-      filter: drop-shadow(0 10px 12px rgba(2,132,199,.15));
-    }
-    @keyframes fall{
-      to{
-        transform: translateY(calc(100vh + 40px)) rotate(480deg);
-        opacity: .98;
-      }
-    }
-    .statusline{
-      margin-top: 6px;
-      display:flex;
-      gap: 8px;
-      flex-wrap: wrap;
       align-items:center;
-      font-size: 12px;
-      color: var(--muted);
+      justify-content:center;
+      z-index: 9998;
+      padding: 18px;
     }
-    .badge{
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.60);
-      border: 1px solid var(--stroke);
-      font-weight: 900;
-      color: var(--text);
-    }
-    .badge.good{ border-color: rgba(22,163,74,.25); color: #0d5b27; background: rgba(22,163,74,.10); }
-    .badge.bad{ border-color: rgba(239,68,68,.25); color: #7a0b0b; background: rgba(239,68,68,.10); }
-    .split{
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items:center;
-      justify-content:space-between;
-      margin-top: 10px;
-    }
-    .table{
-      margin-top: 10px;
-      border: 1px solid var(--stroke);
-      border-radius: 16px;
+    .overlay.show{display:flex;}
+    .modal{
+      width:min(520px, 100%);
+      background: rgba(255,255,255,.92);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.35);
+      box-shadow: 0 24px 70px rgba(0,0,0,.25);
+      padding: 16px;
+      position:relative;
       overflow:hidden;
-      background: rgba(255,255,255,.55);
     }
-    .table .tr{
-      display:grid;
-      grid-template-columns: 1fr auto auto;
-      gap: 10px;
-      padding: 10px 12px;
-      border-top: 1px solid rgba(2,132,199,.12);
-      align-items:center;
-      font-size: 13px;
+    .modal h2{margin: 4px 0 8px; font-size: 20px}
+    .modal p{margin: 0 0 12px; color: var(--muted)}
+    .trophy{
+      font-size: 52px;
+      line-height: 1;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.22));
     }
-    .table .tr:first-child{ border-top:0; }
-    .table .th{
+    .confetti{
+      position:absolute;
+      inset:-20px;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(34,211,238,.55) 0 8px, transparent 9px),
+        radial-gradient(circle at 85% 25%, rgba(14,165,233,.55) 0 8px, transparent 9px),
+        radial-gradient(circle at 30% 70%, rgba(34,197,94,.35) 0 8px, transparent 9px),
+        radial-gradient(circle at 80% 75%, rgba(251,146,60,.35) 0 8px, transparent 9px);
+      opacity:.55;
+      filter: blur(0.3px);
+      animation: floaty 3.5s ease-in-out infinite;
+      pointer-events:none;
+    }
+    @keyframes floaty{
+      0%,100%{transform: translateY(0)}
+      50%{transform: translateY(10px)}
+    }
+
+    .footerNote{
+      margin-top: 10px;
       font-size: 12px;
       color: var(--muted);
-      background: rgba(230,251,255,.65);
-      font-weight: 900;
+      text-align:center;
     }
-    .right{ text-align:right; }
-    .tiny{ font-size: 12px; color: var(--muted); }
+    a{color: var(--accent2); text-decoration: none}
   </style>
 </head>
 
 <body>
-  <div class="confetti" id="confetti"></div>
-
-  <header>
+<header>
+  <div class="topbar">
     <div class="brand">
-      <div class="logo"></div>
+      <div class="drop">💧</div>
       <div>
         <h1>Já bebeu água hoje?</h1>
-        <div class="sub">Leve, simples e viciante (do jeito bom 😄)</div>
+        <small>Leve, simples e viciante (do jeitão bom 😄)</small>
       </div>
     </div>
 
-    <div class="top-actions">
-      <div class="pill" id="pillName">👤 <b>Visitante</b></div>
-      <div class="pill" id="pillTimer">⏱️ <b>00:00:00</b> até meia-noite</div>
-    </div>
-  </header>
-
-  <div class="wrap">
-    <div class="grid">
-
-      <!-- ESQUERDA: CONTROLE -->
-      <section class="card">
-        <div class="row">
-          <div class="field">
-            <label>Seu nome</label>
-            <input id="name" placeholder="Ex.: Ernandes" autocomplete="nickname" />
-          </div>
-          <div class="field">
-            <label>Meta do dia (litros)</label>
-            <input id="goalL" type="number" step="0.05" min="0" placeholder="Ex.: 3.70" />
-          </div>
-          <button class="btn" id="save">Salvar</button>
-        </div>
-
-        <div class="cup-area">
-          <div>
-            <div class="big" id="bigToday">0 ml</div>
-            <div class="statusline">
-              <span class="badge" id="badgePct">0%</span>
-              <span class="badge" id="badgeGoal">Meta: 0 ml</span>
-              <span class="badge" id="badgeLeft">Falta: 0 ml</span>
-            </div>
-
-            <div class="quick" aria-label="Botões rápidos">
-              <div class="chip" data-ml="100">+100 ml</div>
-              <div class="chip" data-ml="200">+200 ml</div>
-              <div class="chip" data-ml="250">+250 ml</div>
-              <div class="chip" data-ml="300">+300 ml</div>
-              <div class="chip" data-ml="350">+350 ml</div>
-              <div class="chip" data-ml="500">+500 ml</div>
-            </div>
-
-            <div class="row" style="margin-top:10px;">
-              <div class="field" style="flex: 1 1 180px;">
-                <label>Adicionar valor (ml)</label>
-                <input id="customMl" type="number" min="0" step="10" placeholder="Ex.: 180" />
-              </div>
-              <button class="btn small" id="addCustom">Adicionar</button>
-              <button class="btn secondary small" id="undo">Desfazer</button>
-              <button class="btn danger small" id="resetToday">Zerar hoje</button>
-            </div>
-
-            <div class="note">
-              <div class="emoji">💡</div>
-              <div class="txt">
-                Cada registro puxa uma frase/info aleatória (tem mais de 60).
-                Se bater a meta antes da meia-noite… <b>troféu + festa</b>.
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div class="cup" aria-label="Copo enchendo">
-              <div class="cupMark">
-                <span>0%</span><span>50%</span><span>100%</span>
-              </div>
-              <div class="water" id="water"></div>
-            </div>
-            <div class="cupLabel" id="cupLabel">Clique para ir enchendo 💧</div>
-
-            <div class="kpi">
-              <div class="mini">
-                <div class="t">Hoje</div>
-                <div class="v" id="kpiToday">0 ml</div>
-              </div>
-              <div class="mini">
-                <div class="t">Ontem</div>
-                <div class="v" id="kpiYesterday">—</div>
-              </div>
-              <div class="mini">
-                <div class="t">Sequência (dias batendo meta)</div>
-                <div class="v" id="kpiStreak">0</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </section>
-
-      <!-- DIREITA: HISTÓRICO + GRÁFICO -->
-      <section class="card">
-        <div class="split">
-          <div>
-            <div style="font-weight:950; font-size:14px;">Histórico & gráfico</div>
-            <div class="muted">Fica tudo salvo no seu celular (localStorage).</div>
-          </div>
-          <div class="row" style="gap:8px; margin:0;">
-            <button class="btn secondary small" id="export">Exportar JSON</button>
-            <button class="btn danger small" id="wipeAll">Apagar tudo</button>
-          </div>
-        </div>
-
-        <div style="margin-top:10px;">
-          <canvas id="chart" width="900" height="320"></canvas>
-          <div class="tiny" style="margin-top:8px;">
-            Dica: o gráfico mostra os últimos 14 dias com registros.
-          </div>
-        </div>
-
-        <div class="table" id="table">
-          <div class="tr th">
-            <div>Data</div>
-            <div class="right">Bebeu</div>
-            <div class="right">Meta</div>
-          </div>
-          <!-- linhas via JS -->
-        </div>
-      </section>
-
+    <div class="statusbar">
+      <div class="chip"><span class="dot"></span> <b id="whoChip">Pessoa</b></div>
+      <div class="chip"><span class="mono" id="clockNow">--:--</span></div>
+      <div class="chip" id="countdownChip"><b class="mono" id="countdownTxt">--:--:--</b> <span>até meia-noite</span></div>
     </div>
   </div>
+</header>
 
-  <!-- Toast motivacional -->
-  <div class="toast" id="toast" role="dialog" aria-live="polite">
-    <div class="trow">
-      <div style="font-size:18px;">💧</div>
-      <div style="min-width:0;">
-        <div class="title" id="toastTitle">Boa!</div>
-        <div class="body" id="toastBody">…</div>
+<main>
+  <div class="grid">
+    <!-- ESQUERDA -->
+    <section class="card">
+      <div class="row">
+        <div class="col">
+          <label>Seu nome</label>
+          <input id="nameInput" placeholder="Ex: Ernandes"/>
+        </div>
+        <div class="col">
+          <label>Meta do dia (litros)</label>
+          <input id="goalInput" type="number" step="0.1" min="0" placeholder="Ex: 3.7"/>
+        </div>
+        <div style="display:flex; align-items:end; gap:10px">
+          <button class="primary" id="saveBtn">Salvar</button>
+        </div>
       </div>
-      <button class="close" id="toastClose" aria-label="Fechar">✕</button>
+
+      <div class="tankWrap" style="margin-top:12px">
+        <div>
+          <div class="big"><span id="todayLiters">0,0</span> <span style="font-size:18px;font-weight:900">L</span></div>
+          <div class="sub">
+            <span class="pill" id="pctPill">0%</span>
+            <span class="pill" id="metaPill">Meta: 0 L</span>
+            <span class="pill" id="leftPill">Falta: 0 L</span>
+          </div>
+
+          <div class="cups">
+            <button class="ghost" data-add="100">+100 ml</button>
+            <button class="ghost" data-add="200">+200 ml</button>
+            <button class="ghost" data-add="250">+250 ml</button>
+            <button class="ghost" data-add="300">+300 ml</button>
+            <button class="ghost" data-add="350">+350 ml</button>
+            <button class="ghost" data-add="500">+500 ml</button>
+          </div>
+
+          <div class="row" style="margin-top:10px; align-items:end">
+            <div class="col">
+              <label>Adicionar valor (ml)</label>
+              <input id="customMl" type="number" min="1" step="10" placeholder="Ex: 230"/>
+            </div>
+            <div style="display:flex; gap:10px; align-items:end">
+              <button class="primary" id="addCustomBtn">Adicionar</button>
+              <button id="undoBtn">Desfazer</button>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:10px; gap:10px">
+            <button class="danger" id="resetTodayBtn">Zerar hoje</button>
+            <button id="exportBtn">Exportar JSON</button>
+            <button class="danger" id="wipeAllBtn">Apagar tudo</button>
+          </div>
+
+          <div class="hint">💡 Dica: cada registro solta uma frase/curiosidade aleatória. Se bater a meta: troféu + festa. 😄</div>
+        </div>
+
+        <div class="miniBox">
+          <div class="tank" id="tankClick">
+            <div class="tankTopLabels">
+              <span>0%</span><span>50%</span><span>100%</span>
+            </div>
+            <div class="water" id="water"></div>
+          </div>
+
+          <div class="card" style="padding:12px; background: rgba(255,255,255,.65);">
+            <div style="display:grid; gap:8px; grid-template-columns: 1fr 1fr;">
+              <div>
+                <label>Hoje</label>
+                <div style="font-weight:900; font-size:14px" id="todaySmall">0,0 L</div>
+              </div>
+              <div>
+                <label>Ontem</label>
+                <div style="font-weight:900; font-size:14px" id="yesterdaySmall">—</div>
+              </div>
+              <div>
+                <label>Sequência (dias batendo meta)</label>
+                <div style="font-weight:900; font-size:14px" id="streakTxt">0</div>
+              </div>
+              <div>
+                <label>Status</label>
+                <div style="font-weight:900; font-size:14px" id="statusTxt">bora hidratar 💧</div>
+              </div>
+            </div>
+            <div class="footerNote">Clique no “tanque” pra adicionar +200 ml rapidinho 😉</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DIREITA -->
+    <section class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap">
+        <div>
+          <div style="font-weight:900">Rotina do dia (com horários) + Histórico</div>
+          <div style="color:var(--muted); font-size:12px">Fica tudo salvo no seu celular (localStorage). Sem login, sem frescura.</div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px; display:grid; gap:12px">
+        <div>
+          <label style="display:block; margin-bottom:6px">Rotina de hoje (hora x litros)</label>
+          <canvas id="timelineCanvas" width="900" height="280"></canvas>
+          <div class="hint">Linha cheia = você ao longo do dia. Linha tracejada = meta. Pontinhos = cada gole com horário.</div>
+        </div>
+
+        <div class="list">
+          <div class="listHeader">
+            <span>Hoje — registros</span>
+            <span class="mono" id="todayCount">0 itens</span>
+          </div>
+          <div class="listBody" id="todayList"></div>
+        </div>
+
+        <div>
+          <label style="display:block; margin-bottom:6px">Últimos 14 dias (total por dia)</label>
+          <canvas id="dailyCanvas" width="900" height="280"></canvas>
+          <div class="hint">O gráfico mostra os últimos 14 dias com registros (inclui meta do dia como linha tracejada).</div>
+        </div>
+
+        <div class="list">
+          <div class="listHeader">
+            <span>Resumo por dia</span>
+            <span class="mono">mais recente em cima</span>
+          </div>
+          <div class="listBody" id="daysList"></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="footerNote">
+    Feito pra ser “appizinho topizera” 💧✨ — se for vender, coloca um ícone e vira PWA instalável.
+  </div>
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <p class="t1" id="toastTitle">Booora 💧</p>
+  <p class="t2" id="toastText">Você adicionou água. Seu corpo agradece.</p>
+  <div class="bar" id="toastBar"></div>
+</div>
+
+<!-- FESTA -->
+<div class="overlay" id="winOverlay">
+  <div class="modal">
+    <div class="confetti"></div>
+    <div style="display:flex; gap:12px; align-items:center">
+      <div class="trophy">🏆</div>
+      <div>
+        <h2 id="winTitle">Meta batida!</h2>
+        <p id="winText">Você é oficialmente uma lenda hidratada. Seu rim tá fazendo a dancinha agora.</p>
+      </div>
+    </div>
+    <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:12px">
+      <button id="closeWinBtn" class="primary">Fechar (e continuar lendário)</button>
     </div>
   </div>
+</div>
 
 <script>
-(() => {
-  // ===== Util =====
-  const $ = (id) => document.getElementById(id);
-  const pad2 = (n) => String(n).padStart(2,'0');
+  // =============================
+  // Utils
+  // =============================
+  const pad2 = n => String(n).padStart(2,'0');
+  const fmtDateKey = (d) => `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
+  const fmtBR = (d) => `${pad2(d.getDate())}/${pad2(d.getMonth()+1)}/${d.getFullYear()}`;
+  const fmtTime = (d) => `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  const clamp = (v,a,b)=>Math.max(a,Math.min(b,v));
 
-  // Data key (local)
-  const todayKey = () => {
-    const d = new Date();
-    return `${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;
-  };
-  const ymdToNice = (ymd) => {
-    const [y,m,dd] = ymd.split('-').map(Number);
-    return `${pad2(dd)}/${pad2(m)}/${y}`;
-  };
-  const clamp = (v,min,max) => Math.max(min, Math.min(max, v));
-  const round = (n) => Math.round(n);
+  const L = (ml)=> ml/1000;
+  const round1 = (x)=> Math.round(x*10)/10;
+  const round2 = (x)=> Math.round(x*100)/100;
 
-  // ===== Storage model =====
-  // waterApp = {
-  //   name: "Fulano",
-  //   goalMl: 3700,
-  //   logs: { "YYYY-MM-DD": { drankMl: 1200, goalMl: 3700, win: null|true|false, lastUpdate: ts } },
-  //   undo: { "YYYY-MM-DD": [100,200] }, // stack of added ml
-  //   streak: 0,
-  //   lastEvaluatedDay: "YYYY-MM-DD" // to avoid double midnight evaluation
+  // =============================
+  // LocalStorage schema
+  // =============================
+  // water_v2 = {
+  //   profile: { name, goalLiters },
+  //   days: {
+  //     "YYYY-MM-DD": { goalLiters, totalMl, entries:[{t:timestamp, ml}] }
+  //   }
+  //   streak: number,
+  //   lastWinDay: "YYYY-MM-DD" | null
   // }
-  const KEY = "waterApp_v1";
+  const KEY = "water_v2";
 
-  const defaultState = () => ({
-    name: "Visitante",
-    goalMl: 2000,
-    logs: {},
-    undo: {},
-    streak: 0,
-    lastEvaluatedDay: null
-  });
-
-  function load(){
+  function loadState(){
     try{
       const raw = localStorage.getItem(KEY);
-      if(!raw) return defaultState();
-      const s = JSON.parse(raw);
-      return { ...defaultState(), ...s };
+      if(!raw) return {
+        profile:{name:"", goalLiters: 3.0},
+        days:{},
+        streak: 0,
+        lastWinDay: null
+      };
+      const st = JSON.parse(raw);
+      // migrate minimal
+      st.profile ||= {name:"", goalLiters:3.0};
+      st.days ||= {};
+      st.streak ||= 0;
+      st.lastWinDay ||= null;
+      return st;
     }catch(e){
-      return defaultState();
+      return {profile:{name:"", goalLiters:3.0}, days:{}, streak:0, lastWinDay:null};
     }
   }
-  function save(state){
+  function saveState(){
     localStorage.setItem(KEY, JSON.stringify(state));
   }
 
-  let state = load();
+  let state = loadState();
 
-  function ensureDay(ymd){
-    if(!state.logs[ymd]){
-      state.logs[ymd] = {
-        drankMl: 0,
-        goalMl: state.goalMl || 2000,
-        win: null,
-        lastUpdate: Date.now()
-      };
-    } else {
-      // mantém meta do dia, mas se estiver vazia, preenche
-      if(!state.logs[ymd].goalMl) state.logs[ymd].goalMl = state.goalMl || 2000;
-      if(typeof state.logs[ymd].drankMl !== "number") state.logs[ymd].drankMl = 0;
-      if(state.logs[ymd].win === undefined) state.logs[ymd].win = null;
-    }
-    if(!state.undo[ymd]) state.undo[ymd] = [];
-  }
-
-  // ===== Motivational / info pool (60+) =====
+  // =============================
+  // 60+ frases aleatórias (curtas, úteis, sem papo chato)
+  // =============================
   const facts = [
-    "Hidratação ajuda a regular a temperatura do corpo, especialmente em dias quentes.",
-    "Água é essencial para o transporte de nutrientes no sangue.",
-    "Uma boa hidratação pode melhorar foco e atenção ao longo do dia.",
-    "Sede já é um sinal tardio: beber aos poucos evita chegar nesse ponto.",
-    "Urina muito escura pode indicar que você está bebendo pouca água.",
-    "Hidratação adequada auxilia no funcionamento intestinal.",
+    "Água ajuda a manter a temperatura corporal no eixo.",
+    "Um corpo hidratado costuma render mais (energia real, não só motivação).",
+    "Sede já é um sinal de que você está atrasado na hidratação.",
+    "Urina muito escura? É o corpo dizendo: “manda água aí!”",
+    "Hidratação ajuda no desempenho do treino e na recuperação.",
+    "Água ajuda no transporte de nutrientes pelo corpo.",
+    "Dor de cabeça às vezes é só falta de água disfarçada.",
+    "Pele agradece. Intestino agradece. Você agradece.",
+    "Rim é trabalhador. Dá uma força pra ele: beba água.",
+    "Leve uma garrafinha. Facilita MUITO bater meta.",
+    "Se você tá lendo isso, toma um gole agora. 😄",
+    "Hidratação ajuda na função cognitiva (sim, o cérebro curte água).",
+    "Cansaço pode ser desidratação leve.",
+    "Café conta? Ajuda, mas água pura é o MVP.",
+    "Calor + pouco líquido = corpo pedindo socorro.",
+    "A água participa do controle de pressão arterial.",
+    "Beba aos poucos, ao longo do dia (rotina > heroísmo).",
+    "Uma meta diária vira hábito quando você torna fácil.",
+    "Água ajuda o sangue a circular direitinho.",
+    "Tá no ar-condicionado? Você pode desidratar mesmo assim.",
+    "Se você sua, você precisa repor líquidos.",
+    "Rotina boa: um copo ao acordar.",
+    "Rotina boa 2: um copo antes de cada refeição.",
+    "Rotina boa 3: mais um copo antes de dormir (sem exagerar).",
+    "Hidratação ajuda a evitar câimbras em algumas pessoas.",
     "Água participa da lubrificação das articulações.",
-    "Beber água ao longo do dia pode ajudar a reduzir dor de cabeça por desidratação.",
-    "Hidratação ajuda o corpo a manter o desempenho físico.",
-    "O cérebro é altamente sensível a pequenas variações de hidratação.",
-    "Beber água antes, durante e depois de exercício melhora a recuperação.",
-    "A água ajuda na produção de saliva e na saúde bucal.",
-    "Uma estratégia simples: 3–5 goles toda vez que olhar o celular (mas sem exagerar).",
-    "Hidratação auxilia os rins a filtrarem resíduos do sangue.",
-    "Em clima seco, você perde mais água pela respiração.",
-    "Suor é um sistema de resfriamento: sem água, ele falha.",
-    "Beber água junto às refeições pode ajudar algumas pessoas a controlar apetite.",
-    "Água ajuda a manter a pele com melhor elasticidade (mas não faz milagre sozinha).",
-    "Começar o dia com um copo de água é um 'reset' simples e eficiente.",
-    "Se você toma café, lembre de compensar com água ao longo do dia.",
-    "Uma garrafa visível na mesa aumenta muito a chance de beber água.",
-    "Hidratar-se pode ajudar a reduzir fadiga ao longo do dia.",
-    "Em dias muito quentes, o corpo pode precisar de mais líquidos.",
-    "Se você usa ar-condicionado, pode sentir menos sede, mas ainda precisa beber.",
-    "Água ajuda na digestão e no funcionamento do estômago.",
-    "Beber água regularmente pode ajudar a evitar cãibras por desidratação.",
-    "Quando você se hidrata, o coração trabalha com menos esforço em algumas situações.",
-    "Pequenas metas por horário ajudam mais do que tentar beber tudo de uma vez.",
-    "Sede confundida com fome acontece — antes de beliscar, teste um copo d'água.",
-    "Uma boa hidratação ajuda a manter a pressão arterial mais estável.",
-    "Água é parte importante na regulação do volume sanguíneo.",
-    "Se você está com a boca seca, provavelmente já atrasou a hidratação.",
-    "Hidratar melhora a percepção de esforço durante atividade física.",
-    "Uma dica: encha sua garrafa e marque mentalmente 3 momentos do dia pra terminar 1/3.",
-    "Após álcool, a hidratação no dia seguinte faz diferença (e o sono também).",
-    "Hidratação pode reduzir a chance de dor de cabeça em quem esquece de beber água.",
-    "O corpo perde água mesmo sem suor visível (respiração, urina, pele).",
-    "Água ajuda no transporte de oxigênio pelos tecidos (via sangue).",
-    "Beba em goles: seu corpo gosta de constância, não de extremos.",
-    "Hidratar pode ajudar no humor quando você está irritado sem motivo claro.",
-    "Durante viagens, leve água: ar seco e rotina quebrada diminuem a ingestão.",
-    "Se você come muita proteína, beber água ajuda o trabalho renal.",
-    "Hidratar-se bem pode ajudar a reduzir sensação de “cansaço mental”.",
-    "Uma garrafa com marcações (ou este app) vira um 'jogo' — e jogo ajuda hábito.",
-    "Em crianças e idosos, sinais de desidratação podem ser mais sutis.",
-    "Água é importante para manter o equilíbrio de eletrólitos (junto com alimentação).",
-    "Se você fica muito tempo falando/aula, água ajuda a voz e a garganta.",
-    "Beber água pode ajudar na regularidade do sono em algumas pessoas (sem exagerar à noite).",
-    "Se acordou com dor de cabeça, experimente hidratar e avaliar ao longo do dia.",
-    "Hidratação ajuda a manter a função cognitiva em tarefas longas.",
-    "Seu corpo não 'armazena' água como um tanque: precisa reposição diária.",
-    "Em atividade física, não espere sede: programe goles a cada 10–20 min.",
-    "Um truque: água gelada pode ser mais agradável no calor — e você bebe mais.",
-    "Se você sente tontura ao levantar, hidratação é um ponto a checar (entre outros).",
-    "Urina muito clara o tempo todo pode indicar excesso — equilíbrio é o alvo.",
-    "Hidratação auxilia no trânsito intestinal, especialmente com fibras cozidas.",
-    "Se você está em dieta, água ajuda bastante na saciedade momentânea.",
-    "Calor + umidade alta: risco maior de estresse térmico — água vira prioridade.",
-    "Em dias frios, você sente menos sede, mas ainda perde água respirando.",
-    "Hidratação adequada pode ajudar na recuperação pós-treino (com comida e descanso).",
-    "Beba água como você escova os dentes: hábito simples, todo dia.",
-    "Meta batida cedo? Você comprou energia e clareza pro resto do dia.",
-    "Cada clique é um voto no seu corpo funcionando melhor.",
-    "Consistência > perfeição: se atrasou hoje, recomeça agora.",
-    "Água não resolve tudo, mas sem ela quase nada funciona direito.",
-    "A melhor garrafa é a que fica perto de você — agora.",
-    "Se a água 'não desce', experimente pequenos goles mais frequentes.",
-    "Quando bater a meta, comemore: hábitos precisam de recompensa."
+    "Você não é cacto. Bora hidratar. 🌵❌",
+    "Bater meta cedo? Aí é elite hidratada.",
+    "Beba e marque. Pequenas vitórias viram constância.",
+    "Seu corpo é ~60% água. É tipo... seu “combustível”.",
+    "Água ajuda na digestão.",
+    "Quem bebe água costuma comer melhor (efeito colateral bom).",
+    "Se você tá com fome, testa água primeiro (às vezes é sede).",
+    "Atenção: excesso de água de uma vez também não é legal. Espalha no dia.",
+    "Garrafas com marcação de hora ajudam a criar rotina.",
+    "Meta realista > meta perfeita.",
+    "Hidratação ajuda na saúde renal ao longo do tempo.",
+    "Seu humor pode melhorar com hidratação (é sério).",
+    "Calorão do Pantanal? Água neles! ☀️💧",
+    "Noite quente também desidrata (ar seco/ventilador/AC).",
+    "Se você bebeu 200 ml agora, o “você do futuro” agradece.",
+    "Beber água pode ajudar na sensação de bem-estar.",
+    "Beba água antes da reunião chata. Sobrevive melhor.",
+    "Seu corpo não faz “download” de água. Tem que beber mesmo.",
+    "Trabalhou muito hoje? Seu corpo quer reposição.",
+    "Hidratação ajuda na circulação e na termorregulação.",
+    "Água ajuda a manter mucosas hidratadas (nariz/garganta).",
+    "Cuidado com refrigerante achando que substitui água. Não substitui.",
+    "Uma garrafinha perto de você = mais goles automáticos.",
+    "O hábito nasce do ambiente. Deixa água visível.",
+    "Se bater a meta hoje, amanhã fica mais fácil. Sempre.",
+    "Seu rim está online. Mantém ele feliz.",
+    "“Só um gole” vira 2, vira 3. Vai indo.",
+    "Beba água e volte pro mundo real. 😄",
+    "Seu corpo é uma máquina: água é manutenção básica.",
+    "Você tá indo bem. Só continua.",
+    "Hidratação é autocuidado barato e eficiente.",
+    "Água ajuda no transporte de oxigênio pelo sangue (indiretamente).",
+    "Você não precisa esperar sede pra beber.",
+    "Se você tá no sol: água + sombra + bom senso.",
+    "Meta batida = troféu moral + saúde real."
   ];
 
   function pickFact(){
-    // aleatório mas “estável” por aparelho no dia (para evitar repetir sempre igual)
-    const seed = (navigator.userAgent.length * 97) + (new Date().getDate() * 31) + Math.floor(Math.random()*9999);
-    return facts[seed % facts.length] || facts[Math.floor(Math.random()*facts.length)];
+    const idx = Math.floor(Math.random()*facts.length);
+    return facts[idx];
   }
 
-  // ===== Confetti =====
-  function party(){
-    const conf = $("confetti");
-    conf.innerHTML = "";
-    conf.style.display = "block";
-    const n = 70;
-    for(let i=0;i<n;i++){
-      const el = document.createElement("i");
-      // sem escolher cores fixas? aqui são gradientes suaves de “água”
-      const hues = [185, 195, 200, 170, 210];
-      const h = hues[Math.floor(Math.random()*hues.length)];
-      el.style.background = `hsl(${h} 90% ${55 + Math.random()*20}%)`;
-      el.style.left = (Math.random()*100) + "vw";
-      el.style.animationDuration = (2.2 + Math.random()*1.8) + "s";
-      el.style.animationDelay = (Math.random()*0.15) + "s";
-      el.style.transform = `rotate(${Math.random()*120}deg)`;
-      el.style.width = (8 + Math.random()*10) + "px";
-      el.style.height = (10 + Math.random()*14) + "px";
-      conf.appendChild(el);
+  // =============================
+  // DOM
+  // =============================
+  const nameInput = document.getElementById("nameInput");
+  const goalInput = document.getElementById("goalInput");
+  const saveBtn = document.getElementById("saveBtn");
+
+  const todayLiters = document.getElementById("todayLiters");
+  const pctPill = document.getElementById("pctPill");
+  const metaPill = document.getElementById("metaPill");
+  const leftPill = document.getElementById("leftPill");
+  const waterEl = document.getElementById("water");
+
+  const customMl = document.getElementById("customMl");
+  const addCustomBtn = document.getElementById("addCustomBtn");
+  const undoBtn = document.getElementById("undoBtn");
+  const resetTodayBtn = document.getElementById("resetTodayBtn");
+  const exportBtn = document.getElementById("exportBtn");
+  const wipeAllBtn = document.getElementById("wipeAllBtn");
+
+  const whoChip = document.getElementById("whoChip");
+  const clockNow = document.getElementById("clockNow");
+  const countdownTxt = document.getElementById("countdownTxt");
+  const countdownChip = document.getElementById("countdownChip");
+
+  const todaySmall = document.getElementById("todaySmall");
+  const yesterdaySmall = document.getElementById("yesterdaySmall");
+  const streakTxt = document.getElementById("streakTxt");
+  const statusTxt = document.getElementById("statusTxt");
+
+  const toast = document.getElementById("toast");
+  const toastTitle = document.getElementById("toastTitle");
+  const toastText = document.getElementById("toastText");
+  const toastBar = document.getElementById("toastBar");
+
+  const winOverlay = document.getElementById("winOverlay");
+  const closeWinBtn = document.getElementById("closeWinBtn");
+
+  const todayList = document.getElementById("todayList");
+  const todayCount = document.getElementById("todayCount");
+  const daysList = document.getElementById("daysList");
+
+  const dailyCanvas = document.getElementById("dailyCanvas");
+  const timelineCanvas = document.getElementById("timelineCanvas");
+
+  const tankClick = document.getElementById("tankClick");
+
+  // =============================
+  // Day helpers
+  // =============================
+  function ensureDay(key){
+    if(!state.days[key]){
+      state.days[key] = {
+        goalLiters: Number(state.profile.goalLiters || 3.0),
+        totalMl: 0,
+        entries: []
+      };
     }
-    // para sozinho
-    setTimeout(() => conf.style.display = "none", 3200);
+    // manter meta do dia atualizada se usuário mudou meta (mas sem apagar histórico)
+    if(key === todayKey()){
+      state.days[key].goalLiters = Number(state.profile.goalLiters || state.days[key].goalLiters || 3.0);
+    }
+    return state.days[key];
   }
 
-  // ===== Toast =====
+  function todayKey(){
+    return fmtDateKey(new Date());
+  }
+  function yesterdayKey(){
+    const d = new Date();
+    d.setDate(d.getDate()-1);
+    return fmtDateKey(d);
+  }
+
+  // =============================
+  // Toast
+  // =============================
   let toastTimer = null;
-  function showToast(title, body){
-    $("toastTitle").textContent = title;
-    $("toastBody").textContent = body;
-    $("toast").style.display = "block";
+  function showToast(title, text){
+    toastTitle.textContent = title;
+    toastText.textContent = text;
+
+    toast.classList.remove("show");
+    // reinicia a animação da barrinha
+    toastBar.style.animation = "none";
+    toastBar.offsetHeight; // force reflow
+    toastBar.style.animation = null;
+
+    toast.classList.add("show");
+
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => $("toast").style.display = "none", 5200);
+    toastTimer = setTimeout(()=>toast.classList.remove("show"), 4200);
   }
-  $("toastClose").addEventListener("click", () => $("toast").style.display = "none");
 
-  // ===== UI update =====
-  function fmtMl(ml){
-    ml = Math.max(0, round(ml));
-    if(ml >= 1000){
-      const l = (ml/1000);
-      const txt = (Math.round(l*100)/100).toString().replace('.',',');
-      return `${txt} L`;
+  // =============================
+  // Confere vitória
+  // =============================
+  function checkWin(today){
+    const goalL = Number(today.goalLiters || 0);
+    if(goalL <= 0) return;
+
+    const totalL = L(today.totalMl || 0);
+    const key = todayKey();
+
+    if(totalL >= goalL){
+      statusTxt.textContent = "meta batida 😄🏆";
+      if(state.lastWinDay !== key){
+        state.lastWinDay = key;
+        winOverlay.classList.add("show");
+      }
+    }else{
+      statusTxt.textContent = "bora hidratar 💧";
     }
-    return `${ml} ml`;
   }
 
-  function updateHeader(){
-    $("pillName").innerHTML = `👤 <b>${state.name || "Visitante"}</b>`;
+  closeWinBtn.addEventListener("click", ()=> winOverlay.classList.remove("show"));
+
+  // =============================
+  // Registro (com horário!)
+  // =============================
+  function addMl(ml){
+    ml = Number(ml);
+    if(!ml || ml<=0) return;
+
+    const key = todayKey();
+    const day = ensureDay(key);
+
+    day.totalMl = Number(day.totalMl||0) + ml;
+    day.entries = day.entries || [];
+    day.entries.push({ t: Date.now(), ml });
+
+    saveState();
+    renderAll();
+
+    // popup motivacional topizera
+    const fact = pickFact();
+    showToast(`+${ml} ml 💧`, fact);
+
+    // se bateu meta, festa
+    checkWin(day);
   }
 
-  function getTodayLog(){
-    const t = todayKey();
-    ensureDay(t);
-    return state.logs[t];
+  function undo(){
+    const day = ensureDay(todayKey());
+    if(!day.entries || day.entries.length===0) return;
+    const last = day.entries.pop();
+    day.totalMl = Math.max(0, Number(day.totalMl||0) - Number(last.ml||0));
+    saveState();
+    renderAll();
+    showToast("Desfez o último gole 😅", "Sem drama. O importante é continuar hidratando.");
   }
 
+  function resetToday(){
+    const day = ensureDay(todayKey());
+    day.totalMl = 0;
+    day.entries = [];
+    saveState();
+    renderAll();
+    showToast("Zerou hoje 🧽", "Recomeço também é progresso. Bora de novo 💧");
+  }
+
+  // =============================
+  // Midnight check + streak
+  // =============================
   function computeStreak(){
-    // streak = dias consecutivos (até ontem/hoje) com win=true
-    // calcula olhando do dia mais recente para trás.
-    const keys = Object.keys(state.logs).sort(); // crescente
-    if(keys.length === 0){ state.streak = 0; return; }
-
-    // pega último dia avaliado como referência: se hoje já foi avaliado e win, conta. se não, conta até ontem.
-    const today = todayKey();
-    const startDay = today;
-
-    function prevDay(ymd){
-      const [y,m,d] = ymd.split('-').map(Number);
-      const dt = new Date(y, m-1, d);
-      dt.setDate(dt.getDate()-1);
-      return `${dt.getFullYear()}-${pad2(dt.getMonth()+1)}-${pad2(dt.getDate())}`;
-    }
+    // streak = sequência de dias consecutivos batendo meta
+    // vamos olhar do dia atual para trás
+    const keys = Object.keys(state.days).sort(); // asc
+    if(keys.length===0){ state.streak = 0; return; }
 
     let streak = 0;
-    let cur = startDay;
-
-    for(let i=0; i<3660; i++){
-      const log = state.logs[cur];
-      if(log && log.win === true){
+    let d = new Date();
+    // começa de ontem (sequência fechada) OU inclui hoje se já bateu (fica mais motivador)
+    for(;;){
+      const k = fmtDateKey(d);
+      const day = state.days[k];
+      if(!day){ break; }
+      const goal = Number(day.goalLiters||0);
+      const ok = goal>0 && L(day.totalMl||0) >= goal;
+      if(ok){
         streak++;
-        cur = prevDay(cur);
-      } else {
+        d.setDate(d.getDate()-1);
+      }else{
         break;
       }
     }
     state.streak = streak;
   }
 
-  function updateMain(){
-    const t = todayKey();
-    ensureDay(t);
-    const log = state.logs[t];
-    const goal = log.goalMl || state.goalMl || 2000;
-    const drank = log.drankMl || 0;
-
-    $("bigToday").textContent = fmtMl(drank);
-    $("kpiToday").textContent = fmtMl(drank);
-
-    const pct = goal > 0 ? clamp((drank/goal)*100, 0, 999) : 0;
-    $("badgePct").textContent = `${Math.floor(pct)}%`;
-    $("badgeGoal").textContent = `Meta: ${fmtMl(goal)}`;
-    const left = Math.max(0, goal - drank);
-    $("badgeLeft").textContent = `Falta: ${fmtMl(left)}`;
-
-    const waterPct = goal > 0 ? clamp((drank/goal)*100, 0, 100) : 0;
-    $("water").style.height = waterPct + "%";
-
-    if(waterPct >= 100){
-      $("cupLabel").innerHTML = `🏆 Meta batida! Você é uma máquina d’água.`;
-      $("badgePct").classList.add("good");
-      $("badgePct").classList.remove("bad");
-    } else {
-      $("cupLabel").textContent = "Clique para ir enchendo 💧";
-      $("badgePct").classList.remove("good","bad");
+  function midnightOutcome(){
+    // ao virar o dia, avaliamos ontem (ganhou/perdeu)
+    const yk = yesterdayKey();
+    const y = state.days[yk];
+    if(!y) return;
+    const ok = Number(y.goalLiters||0)>0 && L(y.totalMl||0) >= Number(y.goalLiters||0);
+    if(ok){
+      showToast("Ontem você GANHOU 🏆", "Constância é o superpoder. Hoje é mais um dia pra brilhar 💧");
+    }else{
+      showToast("Ontem você perdeu 😅", "Sem culpa. Ajusta a meta, bebe aos poucos e bora hoje 💧");
     }
+  }
+
+  let lastDayKey = todayKey();
+
+  // =============================
+  // Charts (sem libs)
+  // =============================
+  function drawDailyChart(){
+    const ctx = dailyCanvas.getContext("2d");
+    const W = dailyCanvas.width, H = dailyCanvas.height;
+    ctx.clearRect(0,0,W,H);
+
+    const now = new Date();
+    const days = [];
+    for(let i=13;i>=0;i--){
+      const d = new Date(now);
+      d.setDate(now.getDate()-i);
+      const k = fmtDateKey(d);
+      const day = state.days[k];
+      const totalL = day ? L(day.totalMl||0) : 0;
+      const goalL = day ? Number(day.goalLiters||0) : Number(state.profile.goalLiters||0);
+      days.push({k, d, totalL, goalL});
+    }
+
+    const maxY = Math.max(
+      1,
+      ...days.map(x=>x.totalL),
+      ...days.map(x=>x.goalL||0)
+    );
+
+    const pad = 34;
+    const innerW = W - pad*2;
+    const innerH = H - pad*2;
+
+    // grid
+    ctx.globalAlpha = 0.9;
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = "rgba(2,132,199,0.14)";
+    for(let i=0;i<=4;i++){
+      const y = pad + innerH*(i/4);
+      ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(W-pad,y); ctx.stroke();
+    }
+
+    // goal line (tracejada)
+    const goalLine = Number(state.profile.goalLiters||0);
+    if(goalLine>0){
+      const gy = pad + innerH*(1 - goalLine/maxY);
+      ctx.setLineDash([8,6]);
+      ctx.strokeStyle = "rgba(239,68,68,0.55)";
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(pad,gy); ctx.lineTo(W-pad,gy); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // line (totals)
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "rgba(14,165,233,0.95)";
+    ctx.beginPath();
+    days.forEach((pt, idx)=>{
+      const x = pad + innerW*(idx/(days.length-1));
+      const y = pad + innerH*(1 - pt.totalL/maxY);
+      if(idx===0) ctx.moveTo(x,y);
+      else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+
+    // points
+    days.forEach((pt, idx)=>{
+      const x = pad + innerW*(idx/(days.length-1));
+      const y = pad + innerH*(1 - pt.totalL/maxY);
+      ctx.fillStyle = "rgba(14,165,233,0.95)";
+      ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,0.95)";
+      ctx.beginPath(); ctx.arc(x,y,2.2,0,Math.PI*2); ctx.fill();
+    });
+
+    // labels
+    ctx.fillStyle = "rgba(7,59,76,0.85)";
+    ctx.font = "12px system-ui";
+    ctx.fillText("0L", 8, H-pad+6);
+    ctx.fillText(`${round1(maxY)}L`, 6, pad+4);
+
+    // date labels (3)
+    ctx.fillStyle = "rgba(59,106,122,0.9)";
+    const idxs = [0, Math.floor((days.length-1)/2), days.length-1];
+    idxs.forEach(i=>{
+      const pt = days[i];
+      const x = pad + innerW*(i/(days.length-1));
+      ctx.fillText(`${pad2(pt.d.getDate())}/${pad2(pt.d.getMonth()+1)}`, x-18, H-10);
+    });
+  }
+
+  function drawTimelineToday(){
+    const ctx = timelineCanvas.getContext("2d");
+    const W = timelineCanvas.width, H = timelineCanvas.height;
+    ctx.clearRect(0,0,W,H);
+
+    const pad = 34;
+    const innerW = W - pad*2;
+    const innerH = H - pad*2;
+
+    // grid
+    ctx.strokeStyle = "rgba(2,132,199,0.14)";
+    ctx.lineWidth = 1;
+    for(let i=0;i<=4;i++){
+      const y = pad + innerH*(i/4);
+      ctx.beginPath(); ctx.moveTo(pad,y); ctx.lineTo(W-pad,y); ctx.stroke();
+    }
+    for(let i=0;i<=6;i++){
+      const x = pad + innerW*(i/6);
+      ctx.beginPath(); ctx.moveTo(x,pad); ctx.lineTo(x,H-pad); ctx.stroke();
+    }
+
+    const day = ensureDay(todayKey());
+    const goalL = Number(day.goalLiters||0);
+    const entries = (day.entries||[]).slice().sort((a,b)=>a.t-b.t);
+
+    // construir série cumulativa ao longo do tempo
+    const start = new Date(); start.setHours(0,0,0,0);
+    const end = new Date(); end.setHours(23,59,59,999);
+    const t0 = start.getTime();
+    const t1 = end.getTime();
+
+    let cumMl = 0;
+    const series = [{t:t0, L:0}];
+    for(const e of entries){
+      cumMl += Number(e.ml||0);
+      series.push({t:e.t, L: L(cumMl)});
+    }
+    // estender até agora
+    const now = Date.now();
+    series.push({t: now, L: L(cumMl)});
+
+    const maxY = Math.max(1, goalL || 0, ...series.map(s=>s.L));
+
+    function xOf(t){ return pad + innerW*((t - t0)/(t1 - t0)); }
+    function yOf(v){ return pad + innerH*(1 - v/maxY); }
+
+    // meta (tracejada)
+    if(goalL>0){
+      const gy = yOf(goalL);
+      ctx.setLineDash([8,6]);
+      ctx.strokeStyle = "rgba(239,68,68,0.55)";
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(pad,gy); ctx.lineTo(W-pad,gy); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = "rgba(239,68,68,0.75)";
+      ctx.font = "12px system-ui";
+      ctx.fillText(`meta ${round1(goalL)}L`, W-pad-90, gy-6);
+    }
+
+    // linha cumulativa
+    ctx.strokeStyle = "rgba(14,165,233,0.95)";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    series.forEach((p, i)=>{
+      const x = xOf(p.t);
+      const y = yOf(p.L);
+      if(i===0) ctx.moveTo(x,y);
+      else ctx.lineTo(x,y);
+    });
+    ctx.stroke();
+
+    // pontos (goles)
+    cumMl = 0;
+    entries.forEach((e)=>{
+      cumMl += Number(e.ml||0);
+      const x = xOf(e.t);
+      const y = yOf(L(cumMl));
+      ctx.fillStyle = "rgba(14,165,233,0.95)";
+      ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,0.95)";
+      ctx.beginPath(); ctx.arc(x,y,2.2,0,Math.PI*2); ctx.fill();
+    });
+
+    // eixos/labels
+    ctx.fillStyle = "rgba(7,59,76,0.85)";
+    ctx.font = "12px system-ui";
+    ctx.fillText("0L", 8, H-pad+6);
+    ctx.fillText(`${round1(maxY)}L`, 6, pad+4);
+
+    // horas (0, 6, 12, 18, 24)
+    const hours = [0,6,12,18,24];
+    ctx.fillStyle = "rgba(59,106,122,0.9)";
+    hours.forEach(h=>{
+      const t = new Date(start); t.setHours(h,0,0,0);
+      const x = xOf(t.getTime());
+      const label = (h===24) ? "24h" : `${h}h`;
+      ctx.fillText(label, x-10, H-10);
+    });
+
+    // “agora”
+    const xn = xOf(now);
+    ctx.strokeStyle = "rgba(7,59,76,0.22)";
+    ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(xn,pad); ctx.lineTo(xn,H-pad); ctx.stroke();
+  }
+
+  // =============================
+  // Render
+  // =============================
+  function renderHeaderTime(){
+    const d = new Date();
+    clockNow.textContent = `${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+
+    // countdown até meia noite
+    const end = new Date(); end.setHours(23,59,59,999);
+    const diff = Math.max(0, end.getTime() - d.getTime());
+    const hh = Math.floor(diff/3600000);
+    const mm = Math.floor((diff%3600000)/60000);
+    const ss = Math.floor((diff%60000)/1000);
+    countdownTxt.textContent = `${pad2(hh)}:${pad2(mm)}:${pad2(ss)}`;
+
+    // cor do chip se estiver “em cima da hora”
+    if(hh===0 && mm<30){
+      countdownChip.classList.add("warn");
+      countdownChip.classList.remove("ok");
+    }else{
+      countdownChip.classList.add("ok");
+      countdownChip.classList.remove("warn");
+    }
+
+    // detecta virada do dia
+    const tk = todayKey();
+    if(tk !== lastDayKey){
+      // virou o dia
+      midnightOutcome();
+      lastDayKey = tk;
+    }
+  }
+
+  function renderProfile(){
+    nameInput.value = state.profile.name || "";
+    goalInput.value = String(state.profile.goalLiters ?? 3.0);
+    whoChip.textContent = (state.profile.name && state.profile.name.trim()) ? state.profile.name.trim() : "Pessoa";
+  }
+
+  function renderToday(){
+    const key = todayKey();
+    const day = ensureDay(key);
+
+    const goalL = Number(day.goalLiters||0);
+    const totalL = L(day.totalMl||0);
+
+    todayLiters.textContent = String(round1(totalL)).replace(".",",");
+    todaySmall.textContent = `${String(round1(totalL)).replace(".",",")} L`;
+
+    metaPill.textContent = `Meta: ${String(round1(goalL)).replace(".",",")} L`;
+
+    const pct = goalL>0 ? clamp((totalL/goalL)*100, 0, 999) : 0;
+    pctPill.textContent = `${Math.round(pct)}%`;
+    pctPill.classList.toggle("good", pct>=100);
+    pctPill.classList.toggle("bad", pct<100);
+
+    const left = Math.max(0, goalL-totalL);
+    leftPill.textContent = `Falta: ${String(round1(left)).replace(".",",")} L`;
+    leftPill.classList.toggle("good", left===0);
+
+    const h = goalL>0 ? clamp((totalL/goalL)*100, 0, 120) : 0;
+    waterEl.style.height = `${Math.min(100,h)}%`;
 
     // ontem
-    const y = new Date();
-    y.setDate(y.getDate()-1);
-    const yKey = `${y.getFullYear()}-${pad2(y.getMonth()+1)}-${pad2(y.getDate())}`;
-    const yLog = state.logs[yKey];
-    $("kpiYesterday").textContent = yLog ? fmtMl(yLog.drankMl || 0) : "—";
+    const y = state.days[yesterdayKey()];
+    if(y){
+      const yL = round1(L(y.totalMl||0));
+      yesterdaySmall.textContent = `${String(yL).replace(".",",")} L`;
+    }else{
+      yesterdaySmall.textContent = "—";
+    }
 
     computeStreak();
-    $("kpiStreak").textContent = String(state.streak);
+    streakTxt.textContent = String(state.streak||0);
 
-    updateTable();
-    drawChart();
-    save(state);
+    checkWin(day);
   }
 
-  // ===== Timer até meia-noite + avaliação =====
-  function msToNextMidnight(){
-    const now = new Date();
-    const next = new Date(now);
-    next.setHours(24,0,0,0);
-    return next.getTime() - now.getTime();
-  }
-  function updateTimer(){
-    const ms = msToNextMidnight();
-    const total = Math.max(0, Math.floor(ms/1000));
-    const h = Math.floor(total/3600);
-    const m = Math.floor((total%3600)/60);
-    const s = total%60;
-    $("pillTimer").innerHTML = `⏱️ <b>${pad2(h)}:${pad2(m)}:${pad2(s)}</b> até meia-noite`;
-  }
+  function renderLists(){
+    // lista de hoje com horários
+    const day = ensureDay(todayKey());
+    const entries = (day.entries||[]).slice().sort((a,b)=>b.t-a.t);
 
-  function evaluateDay(ymd){
-    ensureDay(ymd);
-    const log = state.logs[ymd];
-    const goal = log.goalMl || state.goalMl || 2000;
-    const drank = log.drankMl || 0;
-    const win = drank >= goal && goal > 0;
+    todayCount.textContent = `${entries.length} itens`;
+    todayList.innerHTML = entries.length ? "" : `<div class="item"><small>Sem registros ainda… bora começar com um gole 💧</small><span class="badge">0 ml</span></div>`;
 
-    log.win = win;
-    log.lastUpdate = Date.now();
+    let cum = 0;
+    // para cumulativo, reconstruímos ordenado crescente
+    const asc = (day.entries||[]).slice().sort((a,b)=>a.t-b.t);
+    const cumAt = new Map();
+    cum = 0;
+    asc.forEach(e=>{
+      cum += Number(e.ml||0);
+      cumAt.set(e.t, cum);
+    });
 
-    // streak: recalcula depois
-    state.lastEvaluatedDay = ymd;
+    entries.forEach(e=>{
+      const dt = new Date(e.t);
+      const ml = Number(e.ml||0);
+      const cumMl = cumAt.get(e.t) || 0;
+      const html = `
+        <div class="item">
+          <div>
+            <b>${fmtTime(dt)}</b> <small>(${fmtBR(dt)})</small><br/>
+            <small>Total acumulado: ${round1(L(cumMl))} L</small>
+          </div>
+          <span class="badge">+${ml} ml</span>
+        </div>`;
+      todayList.insertAdjacentHTML("beforeend", html);
+    });
 
-    if(win){
-      showToast("🏆 Vitória do dia!", "Você bateu a meta. Seu corpo agradece — e o app também 😄");
-    } else {
-      showToast("⏳ Dia encerrado", "Hoje não deu a meta — sem drama. Amanhã você volta mais forte (e mais hidratado).");
+    // lista por dia (recente em cima)
+    const keys = Object.keys(state.days).sort((a,b)=>b.localeCompare(a));
+    daysList.innerHTML = "";
+    if(keys.length===0){
+      daysList.innerHTML = `<div class="item"><small>Nenhum dia registrado ainda.</small><span class="badge">—</span></div>`;
+      return;
     }
-    save(state);
+    keys.slice(0, 60).forEach(k=>{
+      const d = state.days[k];
+      const totalL = round1(L(d.totalMl||0));
+      const goal = round1(Number(d.goalLiters||0));
+      const ok = goal>0 && totalL>=goal;
+
+      const parts = k.split("-");
+      const label = `${parts[2]}/${parts[1]}/${parts[0]}`;
+
+      const html = `
+        <div class="item">
+          <div>
+            <b>${label}</b><br/>
+            <small>Meta ${goal} L • ${ok ? "bateu ✅" : "não bateu 😅"}</small>
+          </div>
+          <span class="badge">${String(totalL).replace(".",",")} L</span>
+        </div>`;
+      daysList.insertAdjacentHTML("beforeend", html);
+    });
   }
 
-  function scheduleMidnightCheck(){
-    // garante que quando virar o dia, avalia "ontem" e reseta UI pro dia novo
-    setTimeout(() => {
-      const now = new Date();
-      const yesterday = new Date(now);
-      yesterday.setDate(yesterday.getDate()-1);
-      const yKey = `${yesterday.getFullYear()}-${pad2(yesterday.getMonth()+1)}-${pad2(yesterday.getDate())}`;
-
-      // evita dupla avaliação
-      if(state.lastEvaluatedDay !== yKey){
-        evaluateDay(yKey);
-      }
-
-      // cria log do novo dia
-      ensureDay(todayKey());
-      updateMain();
-
-      // agenda de novo
-      scheduleMidnightCheck();
-    }, msToNextMidnight() + 50);
+  function renderCharts(){
+    drawTimelineToday();
+    drawDailyChart();
   }
 
-  // ===== Actions =====
-  function setUserAndGoal(){
-    const nm = ($("name").value || "").trim();
-    const goalL = parseFloat(($("goalL").value || "").replace(',','.'));
-    if(nm) state.name = nm;
+  function renderAll(){
+    renderProfile();
+    renderToday();
+    renderLists();
+    renderCharts();
+  }
 
-    if(Number.isFinite(goalL) && goalL > 0){
-      state.goalMl = round(goalL * 1000);
-      // meta do dia atual também
-      const t = todayKey();
-      ensureDay(t);
-      state.logs[t].goalMl = state.goalMl;
+  // =============================
+  // Events
+  // =============================
+  saveBtn.addEventListener("click", ()=>{
+    const name = (nameInput.value||"").trim();
+    const goal = Number(goalInput.value||0);
+
+    state.profile.name = name;
+    state.profile.goalLiters = (goal>0 ? goal : 3.0);
+
+    // atualiza meta do dia atual
+    ensureDay(todayKey()).goalLiters = Number(state.profile.goalLiters||3.0);
+
+    saveState();
+    renderAll();
+    showToast("Salvo ✅", "Configuração guardada. Agora é só ir enchendo esse tanque 💧");
+  });
+
+  document.querySelectorAll("[data-add]").forEach(btn=>{
+    btn.addEventListener("click", ()=> addMl(btn.getAttribute("data-add")));
+  });
+
+  addCustomBtn.addEventListener("click", ()=>{
+    const ml = Number(customMl.value||0);
+    if(!ml || ml<=0){
+      showToast("Opa 😅", "Coloca um valor em ml (ex: 200).");
+      return;
     }
+    addMl(ml);
+    customMl.value = "";
+  });
 
-    save(state);
-    updateHeader();
-    updateMain();
-    showToast("✅ Configurado", "Nome e meta salvos. Agora é só clicar e encher o copo!");
-  }
+  undoBtn.addEventListener("click", undo);
+  resetTodayBtn.addEventListener("click", resetToday);
 
-  function addWater(ml){
-    ml = round(Number(ml));
-    if(!Number.isFinite(ml) || ml <= 0) return;
-
-    const t = todayKey();
-    ensureDay(t);
-
-    state.logs[t].drankMl = round((state.logs[t].drankMl || 0) + ml);
-    state.logs[t].lastUpdate = Date.now();
-    state.undo[t].push(ml);
-
-    const goal = state.logs[t].goalMl || state.goalMl || 2000;
-    const drank = state.logs[t].drankMl || 0;
-
-    // pop-up info
-    const msg = pickFact();
-    showToast("💧 Registrado!", msg);
-
-    // festa se bater meta
-    if(goal > 0 && drank >= goal && state.logs[t].win !== true){
-      state.logs[t].win = true; // marcou antes da meia-noite
-      party();
-      showToast("🏆 META BATIDA!", "Você bateu a meta antes da meia-noite. Festa merecida! 🎉");
-    }
-
-    save(state);
-    updateMain();
-  }
-
-  function undo(){
-    const t = todayKey();
-    ensureDay(t);
-    const stack = state.undo[t] || [];
-    const last = stack.pop();
-    if(!last) return showToast("↩️ Nada para desfazer", "Você ainda não adicionou água hoje.");
-    state.logs[t].drankMl = Math.max(0, round((state.logs[t].drankMl || 0) - last));
-    state.logs[t].lastUpdate = Date.now();
-    // se tinha marcado win, reavalia condição
-    const goal = state.logs[t].goalMl || state.goalMl || 2000;
-    state.logs[t].win = (state.logs[t].drankMl >= goal);
-    save(state);
-    updateMain();
-    showToast("↩️ Desfeito", `Removi ${fmtMl(last)} do registro de hoje.`);
-  }
-
-  function resetToday(){
-    const t = todayKey();
-    ensureDay(t);
-    state.logs[t].drankMl = 0;
-    state.logs[t].win = null;
-    state.undo[t] = [];
-    save(state);
-    updateMain();
-    showToast("🧼 Hoje zerado", "Zeramos o contador de hoje. Recomeço limpo.");
-  }
-
-  function wipeAll(){
-    if(!confirm("Apagar TUDO (nome, meta, histórico)?")) return;
-    localStorage.removeItem(KEY);
-    state = defaultState();
-    $("name").value = "";
-    $("goalL").value = "";
-    updateHeader();
-    updateMain();
-    showToast("🗑️ Tudo apagado", "Seu histórico foi removido deste aparelho.");
-  }
-
-  function exportJSON(){
+  exportBtn.addEventListener("click", ()=>{
     const blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -1007,200 +1299,32 @@
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
-    showToast("📦 Exportado", "Baixei seu histórico em JSON.");
-  }
-
-  // ===== Table =====
-  function updateTable(){
-    const table = $("table");
-    // remove linhas antigas (mantém header)
-    [...table.querySelectorAll(".tr.data")].forEach(n => n.remove());
-
-    const keys = Object.keys(state.logs).sort().slice(-10).reverse(); // últimos 10
-    for(const k of keys){
-      const log = state.logs[k];
-      const drank = log?.drankMl ?? 0;
-      const goal = log?.goalMl ?? state.goalMl ?? 2000;
-      const tr = document.createElement("div");
-      tr.className = "tr data";
-      const win = log?.win;
-      const badge = win === true ? "🏆" : (win === false ? "⛔" : "•");
-      tr.innerHTML = `
-        <div>${badge} ${ymdToNice(k)}</div>
-        <div class="right"><b>${fmtMl(drank)}</b></div>
-        <div class="right">${fmtMl(goal)}</div>
-      `;
-      table.appendChild(tr);
-    }
-  }
-
-  // ===== Chart (Canvas) =====
-  function drawChart(){
-    const canvas = $("chart");
-    const ctx = canvas.getContext("2d");
-
-    // HiDPI
-    const dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-    const cssW = canvas.clientWidth;
-    const cssH = canvas.clientHeight;
-    canvas.width = Math.floor(cssW * dpr);
-    canvas.height = Math.floor(cssH * dpr);
-    ctx.setTransform(dpr,0,0,dpr,0,0);
-
-    // data: últimos 14 dias com logs (ou últimos 14 dias do calendário)
-    const allKeys = Object.keys(state.logs).sort(); // crescente
-    if(allKeys.length === 0){
-      ctx.clearRect(0,0,cssW,cssH);
-      drawEmpty(ctx, cssW, cssH);
-      return;
-    }
-
-    const keys = allKeys.slice(-14);
-    const vals = keys.map(k => (state.logs[k]?.drankMl ?? 0));
-    const goals = keys.map(k => (state.logs[k]?.goalMl ?? state.goalMl ?? 2000));
-    const maxY = Math.max(500, ...vals, ...goals);
-
-    // frame
-    ctx.clearRect(0,0,cssW,cssH);
-
-    const padL = 44, padR = 12, padT = 14, padB = 34;
-    const W = cssW - padL - padR;
-    const H = cssH - padT - padB;
-
-    // grid
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = "rgba(2,132,199,.10)";
-    for(let i=0;i<=4;i++){
-      const y = padT + (H*i/4);
-      ctx.beginPath();
-      ctx.moveTo(padL, y);
-      ctx.lineTo(padL+W, y);
-      ctx.stroke();
-    }
-
-    // axes labels (y)
-    ctx.fillStyle = "rgba(7,59,76,.70)";
-    ctx.font = "12px system-ui";
-    for(let i=0;i<=4;i++){
-      const v = Math.round(maxY*(1 - i/4));
-      const y = padT + (H*i/4);
-      ctx.fillText(v >= 1000 ? `${(v/1000).toFixed(1)}L`.replace('.',',') : `${v}ml`, 6, y+4);
-    }
-
-    // x positions
-    const n = keys.length;
-    const xAt = (i) => padL + (n===1 ? W/2 : (W*i/(n-1)));
-    const yAt = (v) => padT + H - (H * (v/maxY));
-
-    // goal line (dashed)
-    ctx.save();
-    ctx.setLineDash([6,6]);
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = "rgba(14,165,233,.45)";
-    ctx.beginPath();
-    for(let i=0;i<n;i++){
-      const x = xAt(i);
-      const y = yAt(goals[i]);
-      if(i===0) ctx.moveTo(x,y);
-      else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-    ctx.restore();
-
-    // drank line
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = "rgba(6,182,212,.85)";
-    ctx.beginPath();
-    for(let i=0;i<n;i++){
-      const x = xAt(i);
-      const y = yAt(vals[i]);
-      if(i===0) ctx.moveTo(x,y);
-      else ctx.lineTo(x,y);
-    }
-    ctx.stroke();
-
-    // points
-    for(let i=0;i<n;i++){
-      const x = xAt(i);
-      const y = yAt(vals[i]);
-      ctx.beginPath();
-      ctx.fillStyle = "rgba(255,255,255,.95)";
-      ctx.strokeStyle = "rgba(6,182,212,.95)";
-      ctx.lineWidth = 3;
-      ctx.arc(x,y,5,0,Math.PI*2);
-      ctx.fill();
-      ctx.stroke();
-    }
-
-    // x labels (few)
-    ctx.fillStyle = "rgba(7,59,76,.70)";
-    ctx.font = "11px system-ui";
-    const labelEvery = n > 8 ? 2 : 1;
-    for(let i=0;i<n;i+=labelEvery){
-      const k = keys[i];
-      const nice = ymdToNice(k).slice(0,5); // DD/MM
-      ctx.fillText(nice, xAt(i)-14, padT+H+22);
-    }
-
-    // legend
-    ctx.font = "12px system-ui";
-    ctx.fillStyle = "rgba(7,59,76,.82)";
-    ctx.fillText("Linha cheia: você | Linha tracejada: meta", padL, 14);
-  }
-
-  function drawEmpty(ctx, w, h){
-    ctx.fillStyle = "rgba(7,59,76,.65)";
-    ctx.font = "14px system-ui";
-    ctx.fillText("Sem histórico ainda. Comece registrando hoje 💧", 18, h/2);
-  }
-
-  // ===== Initial fill UI =====
-  function initUI(){
-    $("name").value = state.name && state.name !== "Visitante" ? state.name : "";
-    $("goalL").value = state.goalMl ? (state.goalMl/1000).toFixed(2).replace('.',',') : "";
-    updateHeader();
-    ensureDay(todayKey());
-    updateMain();
-    updateTimer();
-  }
-
-  // ===== Bindings =====
-  $("save").addEventListener("click", setUserAndGoal);
-  $("addCustom").addEventListener("click", () => addWater($("customMl").value));
-  $("customMl").addEventListener("keydown", (e) => {
-    if(e.key === "Enter") addWater($("customMl").value);
-  });
-  $("undo").addEventListener("click", undo);
-  $("resetToday").addEventListener("click", resetToday);
-  $("wipeAll").addEventListener("click", wipeAll);
-  $("export").addEventListener("click", exportJSON);
-
-  document.querySelectorAll(".chip").forEach(ch => {
-    ch.addEventListener("click", () => addWater(ch.getAttribute("data-ml")));
+    showToast("Exportado 📦", "JSON baixado. Se quiser depois eu faço exportar CSV também.");
   });
 
-  // Timer loop
-  setInterval(updateTimer, 1000);
+  wipeAllBtn.addEventListener("click", ()=>{
+    if(!confirm("Apagar TUDO mesmo? (histórico inteiro)")) return;
+    localStorage.removeItem(KEY);
+    state = loadState();
+    renderAll();
+    showToast("Limpou geral 🧼", "Zerou o histórico. Agora começa a era 2.0 da hidratação 💧");
+  });
 
-  // Agendamento para meia-noite
-  scheduleMidnightCheck();
+  // clique no tanque vira atalho (+200ml)
+  tankClick.addEventListener("click", ()=> addMl(200));
 
-  // Avalia “ontem” se já virou o dia e não foi avaliado (caso app ficou fechado)
-  (function catchUp(){
-    const now = new Date();
-    const y = new Date(now);
-    y.setDate(y.getDate()-1);
-    const yKey = `${y.getFullYear()}-${pad2(y.getMonth()+1)}-${pad2(y.getDate())}`;
-    if(state.logs[yKey] && state.logs[yKey].win === null){
-      // só avalia se existe log de ontem e ainda não foi avaliado
-      evaluateDay(yKey);
-    }
-  })();
+  // =============================
+  // Timer tick
+  // =============================
+  setInterval(()=>{
+    renderHeaderTime();
+    // redesenha timeline a cada minuto pra mover a linha do “agora”
+    renderCharts();
+  }, 1000);
 
-  // Start
-  initUI();
-
-})();
+  // Primeira render
+  renderHeaderTime();
+  renderAll();
 </script>
 </body>
 </html>
