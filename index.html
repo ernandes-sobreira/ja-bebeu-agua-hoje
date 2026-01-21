@@ -812,33 +812,56 @@ function importarObjeto(obj){
   toast("Importado ✅", "Dados mesclados com sucesso.");
 }
 
+function safeParseJSON(text){
+  // remove BOM + espaços invisíveis
+  const cleaned = (text || "")
+    .replace(/^\uFEFF/, "")           // BOM
+    .trim();
+
+  // erro comum: usuário selecionou arquivo HTML (ex: salvou a página)
+  if (cleaned.startsWith("<!DOCTYPE") || cleaned.startsWith("<html") || cleaned.includes("<body")) {
+    throw new Error("Isso parece HTML, não JSON. Selecione o arquivo hidratacao.json exportado.");
+  }
+
+  // valida começo
+  if (!(cleaned.startsWith("{") || cleaned.startsWith("["))) {
+    throw new Error("Conteúdo não parece JSON (não começa com { ou [).");
+  }
+
+  return JSON.parse(cleaned);
+}
+
 function importarArquivo(ev){
   const file = ev.target.files?.[0];
   if(!file) return;
+
   const reader = new FileReader();
   reader.onload = () => {
     try{
-      const obj = JSON.parse(reader.result);
+      const obj = safeParseJSON(reader.result);
       importarObjeto(obj);
     }catch(e){
-      toast("Erro", "Não consegui ler esse JSON. Tenta exportar novamente do outro aparelho.");
+      toast("Não consegui ler esse arquivo 😕", e.message || "Tenta usar 'colar JSON' ou reenviar como Documento.");
     }
     ev.target.value = "";
   };
-  reader.readAsText(file);
+
+  // força UTF-8
+  reader.readAsText(file, "utf-8");
 }
 
 function importarTexto(){
-  const txt = (document.getElementById("jsonText").value || "").trim();
-  if(!txt) return toast("Nada pra importar", "Cole o JSON primeiro.");
+  const txt = (document.getElementById("jsonText").value || "");
+  if(!txt.trim()) return toast("Nada pra importar", "Cole o JSON primeiro.");
   try{
-    const obj = JSON.parse(txt);
+    const obj = safeParseJSON(txt);
     importarObjeto(obj);
     document.getElementById("jsonText").value = "";
   }catch(e){
-    toast("Erro", "O texto não parece ser um JSON válido.");
+    toast("Erro no JSON", e.message || "O texto não parece ser um JSON válido.");
   }
 }
+
 
 /* =========================
    CHARTS
