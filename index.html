@@ -1,305 +1,886 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>Hidratação Diária</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Controle de Hidratação</title>
 
 <style>
 :root{
-  --azul-escuro:#0b3c5d;
+  --nav:#0b3c5d;
   --azul:#1f6fa3;
-  --azul-claro:#cfe9f7;
-  --azul-muito-claro:#eef7fc;
-  --texto:#0e2233;
+  --azul2:#2d87c8;
+  --bg:#eef7fc;
+  --card:#ffffff;
+  --text:#0e2233;
+  --muted:#5f7486;
+  --line:#d7e6f1;
+  --ok:#1aa774;
+  --warn:#f39c12;
+  --danger:#d64545;
+  --shadow:0 14px 40px rgba(0,0,0,.08);
+  --r:18px;
 }
 
-*{box-sizing:border-box;font-family:"Segoe UI",system-ui,sans-serif}
-
+*{box-sizing:border-box}
 body{
   margin:0;
-  background:linear-gradient(180deg,var(--azul-muito-claro),#ffffff);
-  color:var(--texto);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", "Noto Sans";
+  background: linear-gradient(180deg, var(--bg), #ffffff 60%);
+  color:var(--text);
 }
 
-/* ---------- HEADER ---------- */
 header{
-  padding:1rem;
-  background:var(--azul-escuro);
+  background:var(--nav);
   color:#fff;
+  padding:14px 16px;
   text-align:center;
-  font-size:1.2rem;
-  font-weight:600;
+  font-weight:800;
+  letter-spacing:.2px;
+  position:sticky;
+  top:0;
+  z-index:5;
 }
 
-/* ---------- LAYOUT ---------- */
+header .sub{
+  display:block;
+  font-weight:500;
+  opacity:.85;
+  font-size:.9rem;
+  margin-top:4px;
+}
+
 .container{
-  max-width:1100px;
-  margin:auto;
-  padding:1rem;
+  max-width:1180px;
+  margin:0 auto;
+  padding:16px;
   display:grid;
-  grid-template-columns:320px 1fr;
-  gap:1.2rem;
+  grid-template-columns: 340px 1fr;
+  gap:16px;
 }
 
 .card{
+  background:var(--card);
+  border-radius:var(--r);
+  box-shadow:var(--shadow);
+  padding:16px;
+}
+
+h3{
+  margin:0 0 10px;
+  font-size:1.05rem;
+}
+hr{border:none;border-top:1px solid var(--line);margin:14px 0}
+
+.small{font-size:.9rem;color:var(--muted)}
+.muted{color:var(--muted)}
+
+.row{display:flex;gap:10px;align-items:center}
+.row > *{flex:1}
+
+label{display:block;font-size:.85rem;color:var(--muted);margin:10px 0 6px}
+input, select{
+  width:100%;
+  padding:10px 11px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  outline:none;
+  font-size:0.95rem;
   background:#fff;
-  border-radius:18px;
-  padding:1.2rem;
-  box-shadow:0 12px 30px rgba(0,0,0,.08);
 }
+input:focus{border-color:#b9d7ea; box-shadow: 0 0 0 4px rgba(31,111,163,.12);}
 
-/* ---------- COPO ---------- */
-.copo-wrapper{
-  display:flex;
-  flex-direction:column;
+.btn{
+  border:none;
+  border-radius:12px;
+  padding:10px 12px;
+  cursor:pointer;
+  font-weight:800;
+  transition:.15s transform ease, .15s filter ease;
+  display:inline-flex;
   align-items:center;
-  gap:.6rem;
+  justify-content:center;
+  gap:8px;
+}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--azul); color:#fff;}
+.btn.soft{background:rgba(31,111,163,.12); color:var(--nav);}
+.btn.ok{background:var(--ok); color:#fff;}
+.btn.danger{background:var(--danger); color:#fff;}
+.btn.ghost{background:transparent; border:1px solid var(--line); color:var(--nav);}
+
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.grid2{display:grid; grid-template-columns:repeat(2,1fr); gap:8px}
+
+.badge{
+  display:inline-flex;
+  padding:6px 10px;
+  border-radius:999px;
+  font-weight:800;
+  font-size:.82rem;
+  background:rgba(31,111,163,.10);
+  color:var(--nav);
+  border:1px solid rgba(31,111,163,.18);
 }
 
+.kpis{
+  display:grid;
+  grid-template-columns: repeat(3,1fr);
+  gap:10px;
+  margin-top:10px;
+}
+.kpi{
+  background:linear-gradient(180deg, rgba(31,111,163,.08), rgba(31,111,163,.03));
+  border:1px solid rgba(31,111,163,.15);
+  border-radius:14px;
+  padding:10px;
+  text-align:center;
+}
+.kpi strong{display:block;font-size:1.05rem;color:var(--nav)}
+.kpi span{font-size:.82rem;color:var(--muted)}
+
+/* Copo */
+.copoWrap{display:flex; gap:14px; align-items:center}
 .copo{
-  width:130px;
-  height:240px;
-  border:5px solid var(--azul-escuro);
-  border-radius:0 0 25px 25px;
+  width:110px;
+  height:220px;
+  border:4px solid var(--nav);
+  border-top:8px solid var(--nav);
+  border-radius:0 0 24px 24px;
   position:relative;
   overflow:hidden;
   background:#fff;
 }
-
 .agua{
   position:absolute;
   bottom:0;
+  left:0;
   width:100%;
   height:0%;
-  background:linear-gradient(180deg,var(--azul),var(--azul-claro));
-  transition:height .6s ease;
+  background:linear-gradient(180deg, var(--azul2), var(--azul));
+  transition:height .55s ease;
 }
-
-.agua::after{
-  content:"";
+.wave{
   position:absolute;
-  top:-10px;
   left:-20%;
   width:140%;
-  height:20px;
+  height:34px;
+  top:-16px;
   background:rgba(255,255,255,.35);
   border-radius:50%;
+  filter: blur(.2px);
+  animation: wave 3.5s ease-in-out infinite;
+}
+@keyframes wave{
+  0%{transform:translateX(0)}
+  50%{transform:translateX(18px)}
+  100%{transform:translateX(0)}
 }
 
-.porcentagem{
-  font-size:1.4rem;
-  font-weight:700;
-  color:var(--azul-escuro);
+.pct{
+  font-size:1.7rem;
+  font-weight:1000;
+  color:var(--nav);
+  line-height:1.1;
+}
+.big{
+  font-size:1.25rem;
+  font-weight:900;
+  color:var(--nav);
 }
 
-/* ---------- BOTÕES ---------- */
-.btn{
-  border:none;
-  padding:.6rem .9rem;
-  border-radius:12px;
-  background:var(--azul);
-  color:#fff;
-  cursor:pointer;
-  font-weight:600;
-}
-
-.btn.claro{background:var(--azul-claro);color:var(--azul-escuro)}
-.btn.perigo{background:#d64545}
-
-.botoes{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:.5rem;
-  margin-top:.5rem;
-}
-
-/* ---------- FORM ---------- */
-input{
-  width:100%;
-  padding:.6rem;
-  border-radius:10px;
-  border:1px solid #cfdce5;
-}
-
-/* ---------- HISTÓRICO ---------- */
-.lista{
-  max-height:280px;
+.list{
+  max-height:260px;
   overflow:auto;
+  border:1px solid var(--line);
+  border-radius:14px;
 }
-
 .item{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:.5rem;
-  border-bottom:1px solid #e3eef6;
+  gap:10px;
+  padding:10px 12px;
+  border-bottom:1px solid var(--line);
 }
-
-.item small{opacity:.7}
-
-.item button{
-  border:none;
-  background:none;
+.item:last-child{border-bottom:none}
+.item .left{display:flex;flex-direction:column;gap:2px}
+.item .right{display:flex;gap:8px; align-items:center}
+.iconBtn{
+  width:36px; height:36px;
+  border-radius:12px;
+  border:1px solid var(--line);
+  background:#fff;
   cursor:pointer;
-  font-size:1rem;
+  font-size:16px;
+}
+.iconBtn:hover{filter:brightness(.98)}
+
+/* Toast (popups) */
+.toastWrap{
+  position:fixed;
+  left:50%;
+  bottom:18px;
+  transform:translateX(-50%);
+  z-index:9999;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  width:min(520px, calc(100vw - 24px));
+  pointer-events:none;
+}
+.toast{
+  pointer-events:auto;
+  background:rgba(11,60,93,.95);
+  color:#fff;
+  border-radius:16px;
+  padding:12px 14px;
+  box-shadow: 0 18px 60px rgba(0,0,0,.18);
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  animation: pop .22s ease;
+}
+@keyframes pop{
+  from{transform:translateY(10px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+.toast .tTitle{font-weight:1000}
+.toast .tText{opacity:.92;font-size:.95rem}
+.toast .x{
+  margin-left:auto;
+  background:rgba(255,255,255,.15);
+  border:none;
+  color:#fff;
+  border-radius:12px;
+  padding:6px 10px;
+  cursor:pointer;
 }
 
-/* ---------- GRÁFICO ---------- */
-canvas{width:100%;max-height:280px}
+/* Confete simples */
+.confetti{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:9998;
+  overflow:hidden;
+}
+.confetti i{
+  position:absolute;
+  top:-20px;
+  width:10px; height:18px;
+  background:var(--azul);
+  opacity:.9;
+  border-radius:4px;
+  animation: fall 1.6s linear forwards;
+}
+@keyframes fall{
+  to{ transform: translateY(calc(100vh + 40px)) rotate(360deg); opacity:0.95;}
+}
 
-/* ---------- RESPONSIVO ---------- */
-@media(max-width:900px){
+canvas{width:100%; max-height:280px}
+
+@media (max-width: 940px){
   .container{grid-template-columns:1fr}
+  .copoWrap{gap:10px}
 }
 </style>
 </head>
 
 <body>
-
-<header>💧 Controle de Hidratação</header>
+<header>
+  💧 Controle de Hidratação
+  <span class="sub">leve, bonito e viciante — com horas, metas e frases 😄</span>
+</header>
 
 <div class="container">
 
-<!-- ===== COLUNA ESQUERDA ===== -->
-<div class="card">
-  <h3>Copo do dia</h3>
-
-  <div class="copo-wrapper">
-    <div class="copo">
-      <div class="agua" id="agua"></div>
+  <!-- ESQUERDA -->
+  <div class="card">
+    <div class="row" style="align-items:flex-start">
+      <div>
+        <h3>Copo do dia</h3>
+        <div class="small">Data de hoje: <span class="badge" id="hojeLbl"></span></div>
+      </div>
+      <div style="text-align:right">
+        <span class="badge">Meta diária: <span id="metaLbl"></span> L</span>
+      </div>
     </div>
-    <div class="porcentagem" id="pct">0%</div>
-    <small><span id="atual">0</span> L de <span id="meta">4</span> L</small>
+
+    <div class="copoWrap" style="margin-top:12px">
+      <div class="copo" aria-label="Copo enchendo">
+        <div class="agua" id="agua">
+          <div class="wave"></div>
+        </div>
+      </div>
+      <div>
+        <div class="pct" id="pct">0%</div>
+        <div class="small"><span class="big" id="atualLitros">0.0</span> L de <span class="big" id="metaLitros">4.0</span> L</div>
+        <div class="small">Falta: <strong id="faltaLbl">4.0 L</strong></div>
+      </div>
+    </div>
+
+    <div class="kpis">
+      <div class="kpi">
+        <strong id="streak">0</strong>
+        <span>sequência batendo meta</span>
+      </div>
+      <div class="kpi">
+        <strong id="goles">0</strong>
+        <span>goles hoje</span>
+      </div>
+      <div class="kpi">
+        <strong id="status">bora hidratar 💧</strong>
+        <span>status</span>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="grid3">
+      <button class="btn primary" onclick="addGole(200)">+200 ml</button>
+      <button class="btn primary" onclick="addGole(300)">+300 ml</button>
+      <button class="btn primary" onclick="addGole(500)">+500 ml</button>
+    </div>
+
+    <label>Adicionar valor personalizado (ml)</label>
+    <div class="row">
+      <input id="mlCustom" type="number" placeholder="Ex: 250" min="1"/>
+      <button class="btn soft" onclick="addCustom()">Adicionar</button>
+    </div>
+
+    <hr>
+
+    <h3>Meta e dias (manual)</h3>
+
+    <label>Meta diária (litros)</label>
+    <div class="row">
+      <input id="metaInput" type="number" step="0.1" min="0.5" placeholder="Ex: 4.0"/>
+      <button class="btn ok" onclick="setMeta()">Salvar meta</button>
+    </div>
+    <div class="small">A meta vale para todos os dias (salva no aparelho).</div>
+
+    <label>Adicionar / editar um dia manualmente</label>
+    <div class="row">
+      <input id="diaInput" type="date"/>
+      <input id="diaMlInput" type="number" placeholder="Total do dia (ml) Ex: 1800" min="0"/>
+    </div>
+    <div class="grid2" style="margin-top:8px">
+      <button class="btn soft" onclick="setDiaManual()">Salvar total do dia</button>
+      <button class="btn danger" onclick="apagarDiaManual()">Apagar este dia</button>
+    </div>
+    <div class="small">Dica: dá pra adicionar “dias zerados” também 😉</div>
   </div>
 
-  <div class="botoes">
-    <button class="btn" onclick="add(200)">+200 ml</button>
-    <button class="btn" onclick="add(300)">+300 ml</button>
-    <button class="btn" onclick="add(500)">+500 ml</button>
+  <!-- DIREITA -->
+  <div class="card">
+    <div class="row">
+      <div>
+        <h3>Hoje por horas (acumulado)</h3>
+        <div class="small">Cada gole vira um ponto no horário. Linha tracejada = meta.</div>
+      </div>
+      <div style="text-align:right">
+        <button class="btn ghost" onclick="exportarJSON()">Exportar JSON</button>
+      </div>
+    </div>
+    <canvas id="chartHoras"></canvas>
+
+    <hr>
+
+    <h3>Últimos 14 dias (total por dia)</h3>
+    <div class="small">Consumo diário + linha da meta.</div>
+    <canvas id="chartDias" style="margin-top:8px"></canvas>
+
+    <hr>
+
+    <div class="row">
+      <div>
+        <h3>Histórico (editável)</h3>
+        <div class="small">Clique no “👁️” para ver os goles do dia.</div>
+      </div>
+      <div style="text-align:right">
+        <button class="btn soft" onclick="limparTudo()">Reset (apagar tudo)</button>
+      </div>
+    </div>
+
+    <div class="list" id="lista"></div>
   </div>
 
-  <hr>
-
-  <label>Editar valor do dia (ml)</label>
-  <input id="editValor" type="number" placeholder="Ex: 1800">
-  <button class="btn claro" onclick="editarHoje()">Salvar edição</button>
 </div>
 
-<!-- ===== COLUNA DIREITA ===== -->
-<div class="card">
-  <h3>Histórico (editável)</h3>
+<div class="toastWrap" id="toastWrap"></div>
+<div class="confetti" id="confetti"></div>
 
-  <div class="lista" id="lista"></div>
-
-  <hr>
-
-  <h3>Últimos dias</h3>
-  <canvas id="grafico"></canvas>
-</div>
-
-</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-let meta = 4000
-let dados = JSON.parse(localStorage.getItem("aguaDados")||"{}")
+/* =========================
+   STORAGE MODEL (v2)
+   data = {
+     metaMl: number,
+     days: {
+       "YYYY-MM-DD": { totalMl:number, logs:[{t:"HH:MM", ml:number}] }
+     }
+   }
+========================= */
 
-const hoje = new Date().toISOString().slice(0,10)
+const LS_KEY = "hidratacao_v2";
 
-if(!dados[hoje]) dados[hoje]=0
+function loadData(){
+  const raw = localStorage.getItem(LS_KEY);
+  if(raw){
+    try { return JSON.parse(raw); } catch(e){}
+  }
+  return { metaMl: 4000, days: {} };
+}
+function saveData(){ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }
 
-function salvar(){
-  localStorage.setItem("aguaDados",JSON.stringify(dados))
+let DB = loadData();
+
+const hojeISO = new Date().toISOString().slice(0,10);
+ensureDay(hojeISO);
+
+function ensureDay(d){
+  if(!DB.days[d]) DB.days[d] = { totalMl: 0, logs: [] };
+  if(typeof DB.days[d].totalMl !== "number") DB.days[d].totalMl = 0;
+  if(!Array.isArray(DB.days[d].logs)) DB.days[d].logs = [];
 }
 
-function add(ml){
-  dados[hoje]+=ml
-  salvar()
-  render()
+function nowHHMM(){
+  const n = new Date();
+  const hh = String(n.getHours()).padStart(2,"0");
+  const mm = String(n.getMinutes()).padStart(2,"0");
+  return `${hh}:${mm}`;
 }
 
-function editarHoje(){
-  let v = Number(editValor.value||0)
-  dados[hoje]=v
-  salvar()
-  render()
+function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
+function fmtL(ml){ return (ml/1000).toFixed(1); }
+
+const frases = {
+  elogio: [
+    "Você é fera! 🚀",
+    "Aí sim! Hidratando como profissional 😎",
+    "Boa! Seu corpo agradece 💙",
+    "Mandou bem! Consistência é tudo 👏",
+    "Top demais! Você tá no controle 🔥"
+  ],
+  incentivo: [
+    "Bora dar mais um gole? 💧",
+    "Lembrete amigo: água = energia + foco ⚡",
+    "Hidratação ajuda o intestino a funcionar melhor 😉",
+    "A pele, o treino e o cérebro agradecem 🧠",
+    "Pequenos goles ao longo do dia funcionam melhor 😄"
+  ],
+  curiosidade: [
+    "Dica: beber aos poucos costuma ser melhor do que ‘virar’ muita água de uma vez.",
+    "Dica: água antes do café pode reduzir desconforto gástrico ☕💧",
+    "Dica: colocou um alarme de 2 em 2 horas? vira hábito rapidinho ⏰",
+    "Dica: depois do treino, um gole grande ajuda a recuperar.",
+    "Dica: se a urina está muito escura, geralmente é sinal de pouca água."
+  ],
+  meta: [
+    "META BATIDA! Você é fera! 🏆💧",
+    "Chegou na meta! Orgulho do seu eu de amanhã 😄",
+    "Meta completada! Agora é só manter o ritmo 💙",
+    "Você venceu o dia: hidratado e consciente 🔥",
+  ]
+};
+
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)] }
+
+function toast(title, text){
+  const wrap = document.getElementById("toastWrap");
+  const div = document.createElement("div");
+  div.className = "toast";
+  div.innerHTML = `
+    <div>
+      <div class="tTitle">${title}</div>
+      <div class="tText">${text}</div>
+    </div>
+    <button class="x" aria-label="Fechar">OK</button>
+  `;
+  wrap.appendChild(div);
+  const btn = div.querySelector(".x");
+  btn.onclick = () => div.remove();
+  setTimeout(()=>{ if(div.isConnected) div.remove(); }, 5200);
 }
 
-function excluir(d){
-  delete dados[d]
-  salvar()
-  render()
+function confetti(){
+  const c = document.getElementById("confetti");
+  c.innerHTML = "";
+  const n = 45;
+  for(let i=0;i<n;i++){
+    const p = document.createElement("i");
+    const left = Math.random()*100;
+    const delay = Math.random()*0.25;
+    const dur = 1.2 + Math.random()*0.9;
+    const w = 6 + Math.random()*10;
+    const h = 10 + Math.random()*16;
+    const hue = 190 + Math.random()*40; // azul-ish
+    p.style.left = left+"vw";
+    p.style.animationDelay = delay+"s";
+    p.style.animationDuration = dur+"s";
+    p.style.width = w+"px";
+    p.style.height = h+"px";
+    p.style.background = `hsl(${hue} 80% 52%)`;
+    p.style.transform = `rotate(${Math.random()*180}deg)`;
+    c.appendChild(p);
+  }
+  setTimeout(()=> c.innerHTML="", 2000);
 }
 
-function render(){
-  let atual = dados[hoje]||0
-  let pct = Math.min(100,Math.round((atual/meta)*100))
+/* =========================
+   ACTIONS
+========================= */
 
-  document.getElementById("atual").innerText=(atual/1000).toFixed(1)
-  document.getElementById("pct").innerText=pct+"%"
-  document.getElementById("agua").style.height=pct+"%"
+let metaBateuHoje = false;
 
-  let lista=document.getElementById("lista")
-  lista.innerHTML=""
+function addGole(ml){
+  ensureDay(hojeISO);
 
-  Object.keys(dados).sort().reverse().forEach(d=>{
-    let div=document.createElement("div")
-    div.className="item"
-    div.innerHTML=`
-      <div>
-        <strong>${d}</strong><br>
-        <small>${(dados[d]/1000).toFixed(1)} L</small>
-      </div>
-      <button onclick="excluir('${d}')">🗑️</button>
-    `
-    lista.appendChild(div)
-  })
+  const before = DB.days[hojeISO].totalMl;
+  DB.days[hojeISO].totalMl += ml;
+  DB.days[hojeISO].logs.push({ t: nowHHMM(), ml });
 
-  grafico()
+  saveData();
+  render();
+
+  // popups
+  toast("Registrado 💧", `${ml} ml às ${DB.days[hojeISO].logs.at(-1).t}. ${pick(frases.incentivo)}`);
+
+  // meta
+  const after = DB.days[hojeISO].totalMl;
+  if(!metaBateuHoje && before < DB.metaMl && after >= DB.metaMl){
+    metaBateuHoje = true;
+    toast("🏆 Meta batida!", pick(frases.meta));
+    confetti();
+  }else if(after < DB.metaMl){
+    // elogio de vez em quando
+    if(Math.random() < 0.33) toast("Boa!", pick(frases.elogio));
+  }
 }
 
-function grafico(){
-  let ctx=document.getElementById("grafico").getContext("2d")
-  let keys=Object.keys(dados).slice(-14)
-  let vals=keys.map(k=>dados[k]/1000)
+function addCustom(){
+  const v = Number(document.getElementById("mlCustom").value || 0);
+  if(v <= 0) return toast("Ops", "Coloca um valor em ml maior que zero 🙂");
+  document.getElementById("mlCustom").value = "";
+  addGole(v);
+}
 
-  if(window.g) window.g.destroy()
+function setMeta(){
+  const v = Number(document.getElementById("metaInput").value || 0);
+  if(v < 0.5) return toast("Meta inválida", "Coloca pelo menos 0.5 L (ex: 4.0).");
+  DB.metaMl = Math.round(v * 1000);
+  saveData();
+  toast("Meta salva ✅", `Meta diária definida para ${v.toFixed(1)} L. ${pick(frases.curiosidade)}`);
+  render();
+}
 
-  window.g=new Chart(ctx,{
+function setDiaManual(){
+  const d = document.getElementById("diaInput").value;
+  const ml = Number(document.getElementById("diaMlInput").value ?? NaN);
+
+  if(!d) return toast("Escolha uma data", "Selecione o dia que você quer adicionar/editar.");
+  if(Number.isNaN(ml) || ml < 0) return toast("Valor inválido", "Digite o total do dia em ml (ex: 1800).");
+
+  ensureDay(d);
+  DB.days[d].totalMl = ml;
+  // logs: se você quiser, mantém os logs. Não apaga.
+  saveData();
+  toast("Dia atualizado 🗓️", `${d} agora está com ${fmtL(ml)} L.`);
+  render();
+}
+
+function apagarDiaManual(){
+  const d = document.getElementById("diaInput").value;
+  if(!d) return toast("Escolha uma data", "Selecione um dia para apagar.");
+  if(!DB.days[d]) return toast("Nada pra apagar", "Esse dia não existe no histórico.");
+  delete DB.days[d];
+  saveData();
+  toast("Apagado 🗑️", `Removi o dia ${d} do histórico.`);
+  render();
+}
+
+function apagarDia(d){
+  if(!confirm(`Apagar o dia ${d}?`)) return;
+  delete DB.days[d];
+  saveData();
+  render();
+  toast("Ok", `Dia ${d} removido.`);
+}
+
+function editarTotalDia(d){
+  const cur = DB.days[d]?.totalMl ?? 0;
+  const input = prompt(`Editar total do dia ${d} (ml)`, String(cur));
+  if(input === null) return;
+  const v = Number(input);
+  if(Number.isNaN(v) || v < 0) return toast("Valor inválido", "Use um número em ml (ex: 1500).");
+  ensureDay(d);
+  DB.days[d].totalMl = v;
+  saveData();
+  render();
+  toast("Atualizado ✅", `${d}: ${fmtL(v)} L.`);
+}
+
+function verLogsDia(d){
+  ensureDay(d);
+  const logs = DB.days[d].logs || [];
+  if(!logs.length){
+    return toast("Sem goles", `Não há registros por horário em ${d}. (Você pode registrar manualmente pelos botões hoje.)`);
+  }
+  const linhas = logs.slice(-30).map(x=>`• ${x.t} — ${x.ml} ml`).join("\n");
+  alert(`Goles de ${d} (mostrando últimos ${Math.min(30, logs.length)}):\n\n${linhas}`);
+}
+
+function limparTudo(){
+  if(!confirm("Apagar tudo mesmo? (histórico inteiro)")) return;
+  DB = { metaMl: 4000, days: {} };
+  ensureDay(hojeISO);
+  saveData();
+  toast("Reset feito", "Começou do zero. Bora hidratar! 💧");
+  render();
+}
+
+function exportarJSON(){
+  const blob = new Blob([JSON.stringify(DB, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "hidratacao.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  toast("Exportado ✅", "Baixei seu JSON. Se quiser, eu também crio export CSV/Excel.");
+}
+
+/* =========================
+   CHARTS
+========================= */
+let chartHoras = null;
+let chartDias = null;
+
+function buildSeriesHoras(dayISO){
+  // Retorna pontos acumulados ao longo do dia, por hora/minuto (labels HH:MM)
+  ensureDay(dayISO);
+  const logs = DB.days[dayISO].logs.slice().sort((a,b)=> a.t.localeCompare(b.t));
+  const labels = [];
+  const data = [];
+  let acc = 0;
+
+  // Se não tem logs, cria 00:00 com 0 só pra ficar bonito
+  if(!logs.length){
+    labels.push("00:00");
+    data.push(0);
+    return {labels, data};
+  }
+
+  // garante ponto inicial (primeiro horário com 0 antes)
+  labels.push(logs[0].t);
+  data.push(0);
+
+  for(const g of logs){
+    acc += g.ml;
+    labels.push(g.t);
+    data.push(acc/1000);
+  }
+  return {labels, data};
+}
+
+function buildSeriesDiasLast14(){
+  const keys = Object.keys(DB.days).sort(); // asc
+  const last = keys.slice(-14);
+  const labels = last;
+  const data = last.map(d => (DB.days[d]?.totalMl ?? 0)/1000);
+  const metaLine = last.map(()=> DB.metaMl/1000);
+  return {labels, data, metaLine};
+}
+
+function renderCharts(){
+  // HOJE por horas
+  const horas = buildSeriesHoras(hojeISO);
+  const ctxH = document.getElementById("chartHoras").getContext("2d");
+
+  if(chartHoras) chartHoras.destroy();
+  chartHoras = new Chart(ctxH, {
     type:"line",
     data:{
-      labels:keys,
+      labels: horas.labels,
       datasets:[
         {
-          label:"Consumo (L)",
-          data:vals,
+          label:"Acumulado (L)",
+          data: horas.data,
           borderColor:"#0b3c5d",
-          backgroundColor:"rgba(31,111,163,.2)",
-          tension:.4,
-          fill:true
+          backgroundColor:"rgba(31,111,163,.18)",
+          fill:true,
+          tension:.35,
+          pointRadius:3,
+          pointHoverRadius:5
         },
         {
           label:"Meta",
-          data:keys.map(()=>meta/1000),
+          data: horas.labels.map(()=> DB.metaMl/1000),
           borderColor:"#1f6fa3",
-          borderDash:[5,5]
+          borderDash:[6,6],
+          pointRadius:0,
+          tension:0
         }
       ]
     },
     options:{
-      plugins:{legend:{labels:{font:{size:14}}}},
+      plugins:{
+        legend:{labels:{font:{size:14}, color:"#0e2233"}}
+      },
       scales:{
-        y:{ticks:{font:{size:13}}},
-        x:{ticks:{font:{size:12}}}
+        y:{beginAtZero:true, ticks:{font:{size:13}, color:"#0e2233"}},
+        x:{ticks:{font:{size:12}, color:"#0e2233", maxRotation:0, autoSkip:true}}
       }
     }
-  })
+  });
+
+  // Últimos 14 dias
+  const days = buildSeriesDiasLast14();
+  const ctxD = document.getElementById("chartDias").getContext("2d");
+
+  if(chartDias) chartDias.destroy();
+  chartDias = new Chart(ctxD,{
+    type:"line",
+    data:{
+      labels: days.labels,
+      datasets:[
+        {
+          label:"Consumo (L)",
+          data: days.data,
+          borderColor:"#0b3c5d",
+          backgroundColor:"rgba(31,111,163,.14)",
+          fill:true,
+          tension:.35,
+          pointRadius:3,
+          pointHoverRadius:5
+        },
+        {
+          label:"Meta",
+          data: days.metaLine,
+          borderColor:"#1f6fa3",
+          borderDash:[6,6],
+          pointRadius:0,
+          tension:0
+        }
+      ]
+    },
+    options:{
+      plugins:{legend:{labels:{font:{size:14}, color:"#0e2233"}}},
+      scales:{
+        y:{beginAtZero:true, ticks:{font:{size:13}, color:"#0e2233"}},
+        x:{ticks:{font:{size:12}, color:"#0e2233", maxRotation:0, autoSkip:true}}
+      }
+    }
+  });
 }
 
-render()
+/* =========================
+   STREAK + STATUS
+========================= */
+function calcStreak(){
+  const keys = Object.keys(DB.days).sort(); // asc
+  let streak = 0;
+  for(let i=keys.length-1;i>=0;i--){
+    const d = keys[i];
+    const total = DB.days[d]?.totalMl ?? 0;
+    if(total >= DB.metaMl) streak++;
+    else break;
+  }
+  return streak;
+}
+
+function statusText(pct){
+  if(pct >= 100) return "meta batida 🏆";
+  if(pct >= 75) return "tá voando 🔥";
+  if(pct >= 50) return "no caminho 😎";
+  if(pct >= 25) return "bom começo 👏";
+  return "bora hidratar 💧";
+}
+
+/* =========================
+   UI RENDER
+========================= */
+function renderList(){
+  const list = document.getElementById("lista");
+  list.innerHTML = "";
+
+  const keys = Object.keys(DB.days).sort().reverse(); // mais recente em cima
+  if(!keys.length){
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `<div class="left"><strong>Sem histórico</strong><span class="small">Comece registrando alguns goles 😄</span></div>`;
+    list.appendChild(div);
+    return;
+  }
+
+  for(const d of keys){
+    const total = DB.days[d]?.totalMl ?? 0;
+    const pct = clamp(Math.round((total/DB.metaMl)*100), 0, 999);
+    const logsCount = (DB.days[d]?.logs?.length ?? 0);
+
+    const div = document.createElement("div");
+    div.className = "item";
+    div.innerHTML = `
+      <div class="left">
+        <strong>${d}</strong>
+        <span class="small">${fmtL(total)} L • ${pct}% da meta • ${logsCount} goles</span>
+      </div>
+      <div class="right">
+        <button class="iconBtn" title="Ver goles" onclick="verLogsDia('${d}')">👁️</button>
+        <button class="iconBtn" title="Editar total" onclick="editarTotalDia('${d}')">✏️</button>
+        <button class="iconBtn" title="Apagar dia" onclick="apagarDia('${d}')">🗑️</button>
+      </div>
+    `;
+    list.appendChild(div);
+  }
+}
+
+function render(){
+  // labels topo
+  document.getElementById("hojeLbl").textContent = hojeISO;
+  document.getElementById("metaLbl").textContent = (DB.metaMl/1000).toFixed(1);
+  document.getElementById("metaLitros").textContent = (DB.metaMl/1000).toFixed(1);
+  document.getElementById("metaInput").value = (DB.metaMl/1000).toFixed(1);
+
+  // hoje totals
+  ensureDay(hojeISO);
+  const t = DB.days[hojeISO].totalMl;
+  const pct = clamp(Math.round((t/DB.metaMl)*100), 0, 100);
+  const falta = Math.max(0, DB.metaMl - t);
+
+  document.getElementById("atualLitros").textContent = fmtL(t);
+  document.getElementById("pct").textContent = pct + "%";
+  document.getElementById("faltaLbl").textContent = fmtL(falta) + " L";
+
+  // copo
+  document.getElementById("agua").style.height = pct + "%";
+
+  // kpis
+  document.getElementById("streak").textContent = calcStreak();
+  document.getElementById("goles").textContent = DB.days[hojeISO].logs.length;
+  document.getElementById("status").textContent = statusText(pct);
+
+  // meta bateu hoje?
+  metaBateuHoje = (t >= DB.metaMl);
+
+  // default inputs
+  if(!document.getElementById("diaInput").value){
+    document.getElementById("diaInput").value = hojeISO;
+  }
+
+  renderCharts();
+  renderList();
+}
+
+/* =========================
+   BOOT
+========================= */
+toast("Bem-vindo 👋", "Registre seus goles por hora, ajuste a meta e edite qualquer dia. " + pick(frases.curiosidade));
+render();
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 </body>
 </html>
