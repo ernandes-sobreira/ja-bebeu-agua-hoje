@@ -16,10 +16,12 @@
   --muted:#5f7486;
   --line:#d7e6f1;
   --ok:#1aa774;
+  --warn:#f39c12;
   --danger:#d64545;
   --shadow:0 14px 40px rgba(0,0,0,.08);
   --r:18px;
 }
+
 *{box-sizing:border-box}
 body{
   margin:0;
@@ -27,24 +29,27 @@ body{
   background: linear-gradient(180deg, var(--bg), #ffffff 60%);
   color:var(--text);
 }
+
 header{
   background:var(--nav);
   color:#fff;
   padding:14px 16px;
   text-align:center;
-  font-weight:900;
+  font-weight:800;
   letter-spacing:.2px;
   position:sticky;
   top:0;
   z-index:5;
 }
+
 header .sub{
   display:block;
   font-weight:500;
-  opacity:.88;
+  opacity:.85;
   font-size:.9rem;
   margin-top:4px;
 }
+
 .container{
   max-width:1180px;
   margin:0 auto;
@@ -53,18 +58,26 @@ header .sub{
   grid-template-columns: 340px 1fr;
   gap:16px;
 }
+
 .card{
   background:var(--card);
   border-radius:var(--r);
   box-shadow:var(--shadow);
   padding:16px;
 }
-h3{margin:0 0 10px;font-size:1.05rem}
+
+h3{
+  margin:0 0 10px;
+  font-size:1.05rem;
+}
 hr{border:none;border-top:1px solid var(--line);margin:14px 0}
+
 .small{font-size:.9rem;color:var(--muted)}
 .muted{color:var(--muted)}
+
 .row{display:flex;gap:10px;align-items:center}
 .row > *{flex:1}
+
 label{display:block;font-size:.85rem;color:var(--muted);margin:10px 0 6px}
 input, select{
   width:100%;
@@ -76,12 +89,13 @@ input, select{
   background:#fff;
 }
 input:focus{border-color:#b9d7ea; box-shadow: 0 0 0 4px rgba(31,111,163,.12);}
+
 .btn{
   border:none;
   border-radius:12px;
   padding:10px 12px;
   cursor:pointer;
-  font-weight:900;
+  font-weight:800;
   transition:.15s transform ease, .15s filter ease;
   display:inline-flex;
   align-items:center;
@@ -102,7 +116,7 @@ input:focus{border-color:#b9d7ea; box-shadow: 0 0 0 4px rgba(31,111,163,.12);}
   display:inline-flex;
   padding:6px 10px;
   border-radius:999px;
-  font-weight:900;
+  font-weight:800;
   font-size:.82rem;
   background:rgba(31,111,163,.10);
   color:var(--nav);
@@ -125,6 +139,7 @@ input:focus{border-color:#b9d7ea; box-shadow: 0 0 0 4px rgba(31,111,163,.12);}
 .kpi strong{display:block;font-size:1.05rem;color:var(--nav)}
 .kpi span{font-size:.82rem;color:var(--muted)}
 
+/* Copo */
 .copoWrap{display:flex; gap:14px; align-items:center}
 .copo{
   width:110px;
@@ -153,6 +168,7 @@ input:focus{border-color:#b9d7ea; box-shadow: 0 0 0 4px rgba(31,111,163,.12);}
   top:-16px;
   background:rgba(255,255,255,.35);
   border-radius:50%;
+  filter: blur(.2px);
   animation: wave 3.5s ease-in-out infinite;
 }
 @keyframes wave{
@@ -160,8 +176,18 @@ input:focus{border-color:#b9d7ea; box-shadow: 0 0 0 4px rgba(31,111,163,.12);}
   50%{transform:translateX(18px)}
   100%{transform:translateX(0)}
 }
-.pct{font-size:1.7rem;font-weight:1000;color:var(--nav);line-height:1.1}
-.big{font-size:1.25rem;font-weight:900;color:var(--nav)}
+
+.pct{
+  font-size:1.7rem;
+  font-weight:1000;
+  color:var(--nav);
+  line-height:1.1;
+}
+.big{
+  font-size:1.25rem;
+  font-weight:900;
+  color:var(--nav);
+}
 
 .list{
   max-height:260px;
@@ -190,6 +216,7 @@ input:focus{border-color:#b9d7ea; box-shadow: 0 0 0 4px rgba(31,111,163,.12);}
 }
 .iconBtn:hover{filter:brightness(.98)}
 
+/* Toast (popups) */
 .toastWrap{
   position:fixed;
   left:50%;
@@ -199,7 +226,7 @@ input:focus{border-color:#b9d7ea; box-shadow: 0 0 0 4px rgba(31,111,163,.12);}
   display:flex;
   flex-direction:column;
   gap:10px;
-  width:min(560px, calc(100vw - 24px));
+  width:min(520px, calc(100vw - 24px));
   pointer-events:none;
 }
 .toast{
@@ -230,6 +257,7 @@ input:focus{border-color:#b9d7ea; box-shadow: 0 0 0 4px rgba(31,111,163,.12);}
   cursor:pointer;
 }
 
+/* Confete simples */
 .confetti{
   position:fixed;
   inset:0;
@@ -241,6 +269,7 @@ input:focus{border-color:#b9d7ea; box-shadow: 0 0 0 4px rgba(31,111,163,.12);}
   position:absolute;
   top:-20px;
   width:10px; height:18px;
+  background:var(--azul);
   opacity:.9;
   border-radius:4px;
   animation: fall 1.6s linear forwards;
@@ -253,14 +282,15 @@ canvas{width:100%; max-height:280px}
 
 @media (max-width: 940px){
   .container{grid-template-columns:1fr}
+  .copoWrap{gap:10px}
 }
 </style>
 </head>
 
 <body>
 <header>
-  <span id="tituloTopo">💧 Controle de Hidratação</span>
-  <span class="sub" id="subTopo">leve, bonito e viciante — com horas, metas e frases 😄</span>
+  💧 Controle de Hidratação
+  <span class="sub">leve, bonito e viciante — com horas, metas e frases 😄</span>
 </header>
 
 <div class="container">
@@ -275,12 +305,6 @@ canvas{width:100%; max-height:280px}
       <div style="text-align:right">
         <span class="badge">Meta diária: <span id="metaLbl"></span> L</span>
       </div>
-    </div>
-
-    <label>Seu nome (fica salvo)</label>
-    <div class="row">
-      <input id="nomeInput" placeholder="Ex: Ernandes" />
-      <button class="btn soft" onclick="salvarNome()">Salvar</button>
     </div>
 
     <div class="copoWrap" style="margin-top:12px">
@@ -327,25 +351,6 @@ canvas{width:100%; max-height:280px}
 
     <hr>
 
-    <h3>Importar / Exportar (trocar de aparelho)</h3>
-    <div class="grid2">
-      <button class="btn ghost" onclick="exportarJSON()">⬇️ Exportar JSON</button>
-      <button class="btn ghost" onclick="abrirImport()">⬆️ Importar JSON</button>
-    </div>
-
-    <label>Modo de importação</label>
-    <select id="importMode">
-      <option value="merge">Mesclar (recomendado)</option>
-      <option value="replace">Substituir (apaga e coloca o arquivo)</option>
-    </select>
-    <div class="small">
-      <b>Como levar pro outro aparelho:</b> exporte o JSON → envie por WhatsApp/Drive/email → no outro aparelho clique em “Importar JSON”.
-    </div>
-
-    <input id="fileInput" type="file" accept="application/json" style="display:none" />
-
-    <hr>
-
     <h3>Meta e dias (manual)</h3>
 
     <label>Meta diária (litros)</label>
@@ -353,6 +358,7 @@ canvas{width:100%; max-height:280px}
       <input id="metaInput" type="number" step="0.1" min="0.5" placeholder="Ex: 4.0"/>
       <button class="btn ok" onclick="setMeta()">Salvar meta</button>
     </div>
+    <div class="small">A meta vale para todos os dias (salva no aparelho).</div>
 
     <label>Adicionar / editar um dia manualmente</label>
     <div class="row">
@@ -363,13 +369,21 @@ canvas{width:100%; max-height:280px}
       <button class="btn soft" onclick="setDiaManual()">Salvar total do dia</button>
       <button class="btn danger" onclick="apagarDiaManual()">Apagar este dia</button>
     </div>
+    <div class="small">Dica: dá pra adicionar “dias zerados” também 😉</div>
   </div>
 
   <!-- DIREITA -->
   <div class="card">
-    <h3>Hoje por horas (acumulado)</h3>
-    <div class="small">Cada gole vira um ponto no horário. Linha tracejada = meta.</div>
-    <canvas id="chartHoras" style="margin-top:8px"></canvas>
+    <div class="row">
+      <div>
+        <h3>Hoje por horas (acumulado)</h3>
+        <div class="small">Cada gole vira um ponto no horário. Linha tracejada = meta.</div>
+      </div>
+      <div style="text-align:right">
+        <button class="btn ghost" onclick="exportarJSON()">Exportar JSON</button>
+      </div>
+    </div>
+    <canvas id="chartHoras"></canvas>
 
     <hr>
 
@@ -382,7 +396,7 @@ canvas{width:100%; max-height:280px}
     <div class="row">
       <div>
         <h3>Histórico (editável)</h3>
-        <div class="small">👁️ ver goles • ✏️ editar total • 🗑️ apagar</div>
+        <div class="small">Clique no “👁️” para ver os goles do dia.</div>
       </div>
       <div style="text-align:right">
         <button class="btn soft" onclick="limparTudo()">Reset (apagar tudo)</button>
@@ -401,17 +415,23 @@ canvas{width:100%; max-height:280px}
 
 <script>
 /* =========================
-   STORAGE MODEL (v3)
-   DB = { metaMl:number, name:string, days:{ ISO:{totalMl, logs:[{t,ml}]} } }
+   STORAGE MODEL (v2)
+   data = {
+     metaMl: number,
+     days: {
+       "YYYY-MM-DD": { totalMl:number, logs:[{t:"HH:MM", ml:number}] }
+     }
+   }
 ========================= */
-const LS_KEY = "hidratacao_v3";
+
+const LS_KEY = "hidratacao_v2";
 
 function loadData(){
   const raw = localStorage.getItem(LS_KEY);
   if(raw){
     try { return JSON.parse(raw); } catch(e){}
   }
-  return { metaMl: 4000, name: "", days: {} };
+  return { metaMl: 4000, days: {} };
 }
 function saveData(){ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }
 
@@ -432,35 +452,37 @@ function nowHHMM(){
   const mm = String(n.getMinutes()).padStart(2,"0");
   return `${hh}:${mm}`;
 }
+
 function clamp(n,min,max){ return Math.max(min, Math.min(max,n)); }
 function fmtL(ml){ return (ml/1000).toFixed(1); }
 
-/* Frases com nome */
-function nomeAtual(){
-  const n = (DB.name || "").trim();
-  return n ? n : "campeão(ã)";
-}
-
 const frases = {
   elogio: [
-    (n)=>`${n}, você é fera! 🚀`,
-    (n)=>`Aí sim, ${n}! Hidratando como profissional 😎`,
-    (n)=>`Boa, ${n}! Seu corpo agradece 💙`,
-    (n)=>`Mandou bem, ${n}! Consistência é tudo 👏`,
-    (n)=>`${n}, top demais! Você tá no controle 🔥`
+    "Você é fera! 🚀",
+    "Aí sim! Hidratando como profissional 😎",
+    "Boa! Seu corpo agradece 💙",
+    "Mandou bem! Consistência é tudo 👏",
+    "Top demais! Você tá no controle 🔥"
   ],
   incentivo: [
-    (n)=>`Bora mais um gole, ${n}? 💧`,
-    ()=>`Hidratação ajuda energia + foco ⚡`,
-    ()=>`Água ao longo do dia costuma ser melhor do que “virar” muita de uma vez 😉`,
-    ()=>`Pele, treino e cérebro agradecem 🧠`,
-    ()=>`Dica: depois do treino, um gole grande ajuda a recuperar 💪`
+    "Bora dar mais um gole? 💧",
+    "Lembrete amigo: água = energia + foco ⚡",
+    "Hidratação ajuda o intestino a funcionar melhor 😉",
+    "A pele, o treino e o cérebro agradecem 🧠",
+    "Pequenos goles ao longo do dia funcionam melhor 😄"
+  ],
+  curiosidade: [
+    "Dica: beber aos poucos costuma ser melhor do que ‘virar’ muita água de uma vez.",
+    "Dica: água antes do café pode reduzir desconforto gástrico ☕💧",
+    "Dica: colocou um alarme de 2 em 2 horas? vira hábito rapidinho ⏰",
+    "Dica: depois do treino, um gole grande ajuda a recuperar.",
+    "Dica: se a urina está muito escura, geralmente é sinal de pouca água."
   ],
   meta: [
-    (n)=>`META BATIDA! ${n}, você é fera! 🏆💧`,
-    (n)=>`${n}, chegou na meta! Orgulho do seu eu de amanhã 😄`,
-    (n)=>`${n}, meta completada! Agora é só manter o ritmo 💙`,
-    (n)=>`${n}, você venceu o dia: hidratado e consciente 🔥`,
+    "META BATIDA! Você é fera! 🏆💧",
+    "Chegou na meta! Orgulho do seu eu de amanhã 😄",
+    "Meta completada! Agora é só manter o ritmo 💙",
+    "Você venceu o dia: hidratado e consciente 🔥",
   ]
 };
 
@@ -478,9 +500,11 @@ function toast(title, text){
     <button class="x" aria-label="Fechar">OK</button>
   `;
   wrap.appendChild(div);
-  div.querySelector(".x").onclick = () => div.remove();
+  const btn = div.querySelector(".x");
+  btn.onclick = () => div.remove();
   setTimeout(()=>{ if(div.isConnected) div.remove(); }, 5200);
 }
+
 function confetti(){
   const c = document.getElementById("confetti");
   c.innerHTML = "";
@@ -492,36 +516,23 @@ function confetti(){
     const dur = 1.2 + Math.random()*0.9;
     const w = 6 + Math.random()*10;
     const h = 10 + Math.random()*16;
-    const hue = 190 + Math.random()*40;
+    const hue = 190 + Math.random()*40; // azul-ish
     p.style.left = left+"vw";
     p.style.animationDelay = delay+"s";
     p.style.animationDuration = dur+"s";
     p.style.width = w+"px";
     p.style.height = h+"px";
     p.style.background = `hsl(${hue} 80% 52%)`;
+    p.style.transform = `rotate(${Math.random()*180}deg)`;
     c.appendChild(p);
   }
   setTimeout(()=> c.innerHTML="", 2000);
 }
 
-/* ========= Nome ========= */
-function salvarNome(){
-  const v = (document.getElementById("nomeInput").value || "").trim();
-  DB.name = v;
-  saveData();
-  aplicarNomeUI();
-  toast("Nome salvo ✅", v ? `Perfeito, ${v}! Agora ficou bonitão 😄` : "Nome removido (ficou neutro).");
-}
-function aplicarNomeUI(){
-  const n = (DB.name||"").trim();
-  const title = n ? `💧 Controle de Hidratação — ${n}` : "💧 Controle de Hidratação";
-  document.getElementById("tituloTopo").textContent = title;
-  document.getElementById("nomeInput").value = n;
-}
-
 /* =========================
    ACTIONS
 ========================= */
+
 let metaBateuHoje = false;
 
 function addGole(ml){
@@ -534,18 +545,21 @@ function addGole(ml){
   saveData();
   render();
 
-  const n = nomeAtual();
-  toast("Registrado 💧", `${ml} ml às ${DB.days[hojeISO].logs.at(-1).t}. ${pick(frases.incentivo)(n)}`);
+  // popups
+  toast("Registrado 💧", `${ml} ml às ${DB.days[hojeISO].logs.at(-1).t}. ${pick(frases.incentivo)}`);
 
+  // meta
   const after = DB.days[hojeISO].totalMl;
   if(!metaBateuHoje && before < DB.metaMl && after >= DB.metaMl){
     metaBateuHoje = true;
-    toast("🏆 Meta batida!", pick(frases.meta)(n));
+    toast("🏆 Meta batida!", pick(frases.meta));
     confetti();
   }else if(after < DB.metaMl){
-    if(Math.random() < 0.33) toast("Boa!", pick(frases.elogio)(n));
+    // elogio de vez em quando
+    if(Math.random() < 0.33) toast("Boa!", pick(frases.elogio));
   }
 }
+
 function addCustom(){
   const v = Number(document.getElementById("mlCustom").value || 0);
   if(v <= 0) return toast("Ops", "Coloca um valor em ml maior que zero 🙂");
@@ -558,7 +572,7 @@ function setMeta(){
   if(v < 0.5) return toast("Meta inválida", "Coloca pelo menos 0.5 L (ex: 4.0).");
   DB.metaMl = Math.round(v * 1000);
   saveData();
-  toast("Meta salva ✅", `Meta diária definida para ${v.toFixed(1)} L.`);
+  toast("Meta salva ✅", `Meta diária definida para ${v.toFixed(1)} L. ${pick(frases.curiosidade)}`);
   render();
 }
 
@@ -571,6 +585,7 @@ function setDiaManual(){
 
   ensureDay(d);
   DB.days[d].totalMl = ml;
+  // logs: se você quiser, mantém os logs. Não apaga.
   saveData();
   toast("Dia atualizado 🗓️", `${d} agora está com ${fmtL(ml)} L.`);
   render();
@@ -593,6 +608,7 @@ function apagarDia(d){
   render();
   toast("Ok", `Dia ${d} removido.`);
 }
+
 function editarTotalDia(d){
   const cur = DB.days[d]?.totalMl ?? 0;
   const input = prompt(`Editar total do dia ${d} (ml)`, String(cur));
@@ -605,28 +621,26 @@ function editarTotalDia(d){
   render();
   toast("Atualizado ✅", `${d}: ${fmtL(v)} L.`);
 }
+
 function verLogsDia(d){
   ensureDay(d);
   const logs = DB.days[d].logs || [];
   if(!logs.length){
-    return toast("Sem goles", `Não há registros por horário em ${d}.`);
+    return toast("Sem goles", `Não há registros por horário em ${d}. (Você pode registrar manualmente pelos botões hoje.)`);
   }
-  const linhas = logs.slice(-40).map(x=>`• ${x.t} — ${x.ml} ml`).join("\n");
-  alert(`Goles de ${d} (últimos ${Math.min(40, logs.length)}):\n\n${linhas}`);
+  const linhas = logs.slice(-30).map(x=>`• ${x.t} — ${x.ml} ml`).join("\n");
+  alert(`Goles de ${d} (mostrando últimos ${Math.min(30, logs.length)}):\n\n${linhas}`);
 }
+
 function limparTudo(){
   if(!confirm("Apagar tudo mesmo? (histórico inteiro)")) return;
-  const keepName = DB.name || "";
-  DB = { metaMl: 4000, name: keepName, days: {} };
+  DB = { metaMl: 4000, days: {} };
   ensureDay(hojeISO);
   saveData();
   toast("Reset feito", "Começou do zero. Bora hidratar! 💧");
   render();
 }
 
-/* =========================
-   EXPORT / IMPORT
-========================= */
 function exportarJSON(){
   const blob = new Blob([JSON.stringify(DB, null, 2)], {type:"application/json"});
   const url = URL.createObjectURL(blob);
@@ -637,109 +651,7 @@ function exportarJSON(){
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
-  toast("Exportado ✅", "Salvei seu histórico em JSON. Envie esse arquivo pro outro aparelho e importe lá.");
-}
-
-function abrirImport(){
-  document.getElementById("fileInput").click();
-}
-
-document.getElementById("fileInput").addEventListener("change", async (ev)=>{
-  const file = ev.target.files?.[0];
-  ev.target.value = "";
-  if(!file) return;
-
-  try{
-    const text = await file.text();
-    const incoming = JSON.parse(text);
-
-    const mode = document.getElementById("importMode").value;
-
-    const normalized = normalizeIncoming(incoming);
-    if(!normalized) return toast("Arquivo inválido", "Esse JSON não parece ser do app de hidratação.");
-
-    if(mode === "replace"){
-      DB = normalized;
-      ensureDay(hojeISO);
-      saveData();
-      toast("Importado ✅", `Dados substituídos pelo arquivo. Bem-vindo, ${nomeAtual()}!`);
-      render();
-      return;
-    }
-
-    // merge
-    mergeDB(normalized);
-    ensureDay(hojeISO);
-    saveData();
-    toast("Importado ✅", "Mesclei os dados com sucesso (não perdi nada).");
-    render();
-
-  }catch(e){
-    toast("Erro ao importar", "Não consegui ler esse JSON. Verifique se é um arquivo .json válido.");
-  }
-});
-
-function normalizeIncoming(obj){
-  // Aceita:
-  // v3: {metaMl, name, days}
-  // v2 anterior sem name: {metaMl, days}
-  // v1 muito antigo (flat): { "YYYY-MM-DD": totalMl }  -> converte
-  if(!obj || typeof obj !== "object") return null;
-
-  // v3/v2
-  if(obj.days && typeof obj.days === "object"){
-    const metaMl = typeof obj.metaMl === "number" ? obj.metaMl : 4000;
-    const name = typeof obj.name === "string" ? obj.name : "";
-    const days = {};
-    for(const [d,val] of Object.entries(obj.days)){
-      if(!/^\d{4}-\d{2}-\d{2}$/.test(d)) continue;
-      const totalMl = (val && typeof val.totalMl === "number") ? val.totalMl : 0;
-      const logs = (val && Array.isArray(val.logs)) ? val.logs.filter(x=>x && typeof x.t==="string" && typeof x.ml==="number") : [];
-      days[d] = { totalMl, logs };
-    }
-    return { metaMl, name, days };
-  }
-
-  // v1 flat dates
-  const keys = Object.keys(obj);
-  const hasDateKey = keys.some(k=>/^\d{4}-\d{2}-\d{2}$/.test(k));
-  if(hasDateKey){
-    const days = {};
-    for(const [k,v] of Object.entries(obj)){
-      if(!/^\d{4}-\d{2}-\d{2}$/.test(k)) continue;
-      const totalMl = (typeof v === "number") ? v : 0;
-      days[k] = { totalMl, logs: [] };
-    }
-    return { metaMl: 4000, name:"", days };
-  }
-
-  return null;
-}
-
-function mergeDB(incoming){
-  // meta: mantém a meta atual (a não ser que a atual esteja vazia)
-  // name: mantém o atual se existir, senão usa o do incoming
-  if(!DB.name && incoming.name) DB.name = incoming.name;
-  // se DB.metaMl não existir por algum motivo
-  if(typeof DB.metaMl !== "number") DB.metaMl = incoming.metaMl || 4000;
-
-  for(const [d, val] of Object.entries(incoming.days || {})){
-    ensureDay(d);
-    const cur = DB.days[d];
-
-    // total: usa o maior (mais seguro ao mesclar)
-    cur.totalMl = Math.max(cur.totalMl || 0, val.totalMl || 0);
-
-    // logs: concat e remove duplicatas simples (t+ml)
-    const all = (cur.logs || []).concat(val.logs || []);
-    const seen = new Set();
-    cur.logs = all.filter(g=>{
-      const key = `${g.t}|${g.ml}`;
-      if(seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    }).sort((a,b)=> (a.t||"").localeCompare(b.t||""));
-  }
+  toast("Exportado ✅", "Baixei seu JSON. Se quiser, eu também crio export CSV/Excel.");
 }
 
 /* =========================
@@ -749,18 +661,21 @@ let chartHoras = null;
 let chartDias = null;
 
 function buildSeriesHoras(dayISO){
+  // Retorna pontos acumulados ao longo do dia, por hora/minuto (labels HH:MM)
   ensureDay(dayISO);
-  const logs = DB.days[dayISO].logs.slice().sort((a,b)=> (a.t||"").localeCompare(b.t||""));
+  const logs = DB.days[dayISO].logs.slice().sort((a,b)=> a.t.localeCompare(b.t));
   const labels = [];
   const data = [];
   let acc = 0;
 
+  // Se não tem logs, cria 00:00 com 0 só pra ficar bonito
   if(!logs.length){
     labels.push("00:00");
     data.push(0);
     return {labels, data};
   }
 
+  // garante ponto inicial (primeiro horário com 0 antes)
   labels.push(logs[0].t);
   data.push(0);
 
@@ -773,7 +688,7 @@ function buildSeriesHoras(dayISO){
 }
 
 function buildSeriesDiasLast14(){
-  const keys = Object.keys(DB.days).sort();
+  const keys = Object.keys(DB.days).sort(); // asc
   const last = keys.slice(-14);
   const labels = last;
   const data = last.map(d => (DB.days[d]?.totalMl ?? 0)/1000);
@@ -782,8 +697,10 @@ function buildSeriesDiasLast14(){
 }
 
 function renderCharts(){
+  // HOJE por horas
   const horas = buildSeriesHoras(hojeISO);
   const ctxH = document.getElementById("chartHoras").getContext("2d");
+
   if(chartHoras) chartHoras.destroy();
   chartHoras = new Chart(ctxH, {
     type:"line",
@@ -811,7 +728,9 @@ function renderCharts(){
       ]
     },
     options:{
-      plugins:{ legend:{labels:{font:{size:14}, color:"#0e2233"}}},
+      plugins:{
+        legend:{labels:{font:{size:14}, color:"#0e2233"}}
+      },
       scales:{
         y:{beginAtZero:true, ticks:{font:{size:13}, color:"#0e2233"}},
         x:{ticks:{font:{size:12}, color:"#0e2233", maxRotation:0, autoSkip:true}}
@@ -819,8 +738,10 @@ function renderCharts(){
     }
   });
 
+  // Últimos 14 dias
   const days = buildSeriesDiasLast14();
   const ctxD = document.getElementById("chartDias").getContext("2d");
+
   if(chartDias) chartDias.destroy();
   chartDias = new Chart(ctxD,{
     type:"line",
@@ -861,7 +782,7 @@ function renderCharts(){
    STREAK + STATUS
 ========================= */
 function calcStreak(){
-  const keys = Object.keys(DB.days).sort();
+  const keys = Object.keys(DB.days).sort(); // asc
   let streak = 0;
   for(let i=keys.length-1;i>=0;i--){
     const d = keys[i];
@@ -871,6 +792,7 @@ function calcStreak(){
   }
   return streak;
 }
+
 function statusText(pct){
   if(pct >= 100) return "meta batida 🏆";
   if(pct >= 75) return "tá voando 🔥";
@@ -886,7 +808,7 @@ function renderList(){
   const list = document.getElementById("lista");
   list.innerHTML = "";
 
-  const keys = Object.keys(DB.days).sort().reverse();
+  const keys = Object.keys(DB.days).sort().reverse(); // mais recente em cima
   if(!keys.length){
     const div = document.createElement("div");
     div.className = "item";
@@ -918,13 +840,13 @@ function renderList(){
 }
 
 function render(){
-  aplicarNomeUI();
-
+  // labels topo
   document.getElementById("hojeLbl").textContent = hojeISO;
   document.getElementById("metaLbl").textContent = (DB.metaMl/1000).toFixed(1);
   document.getElementById("metaLitros").textContent = (DB.metaMl/1000).toFixed(1);
   document.getElementById("metaInput").value = (DB.metaMl/1000).toFixed(1);
 
+  // hoje totals
   ensureDay(hojeISO);
   const t = DB.days[hojeISO].totalMl;
   const pct = clamp(Math.round((t/DB.metaMl)*100), 0, 100);
@@ -934,14 +856,18 @@ function render(){
   document.getElementById("pct").textContent = pct + "%";
   document.getElementById("faltaLbl").textContent = fmtL(falta) + " L";
 
+  // copo
   document.getElementById("agua").style.height = pct + "%";
 
+  // kpis
   document.getElementById("streak").textContent = calcStreak();
   document.getElementById("goles").textContent = DB.days[hojeISO].logs.length;
   document.getElementById("status").textContent = statusText(pct);
 
+  // meta bateu hoje?
   metaBateuHoje = (t >= DB.metaMl);
 
+  // default inputs
   if(!document.getElementById("diaInput").value){
     document.getElementById("diaInput").value = hojeISO;
   }
@@ -950,5 +876,11 @@ function render(){
   renderList();
 }
 
-/* BOOT */
-toast("Pronto ✅", "Agora tem nome, import
+/* =========================
+   BOOT
+========================= */
+toast("Bem-vindo 👋", "Registre seus goles por hora, ajuste a meta e edite qualquer dia. " + pick(frases.curiosidade));
+render();
+</script>
+</body>
+</html>
