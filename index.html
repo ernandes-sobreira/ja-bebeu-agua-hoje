@@ -399,6 +399,15 @@ details summary{
         </label>
       </div>
 
+      <div class="grid2" style="margin-top:10px">
+  <button class="btn ghost" onclick="copiarBackup()">📋 Copiar Backup (texto)</button>
+  <button class="btn primary" onclick="colarEImportar()">📥 Colar & Importar</button>
+</div>
+<div class="small" style="margin-top:8px">
+  Use “Copiar Backup” no PC e cole no WhatsApp pra você mesmo. No celular, clique “Colar & Importar”.
+</div>
+
+
       <label>Modo de importação</label>
       <select id="importMode">
         <option value="merge">Mesclar (recomendado)</option>
@@ -831,6 +840,18 @@ function safeParseJSON(text){
   return JSON.parse(cleaned);
 }
 
+function safeParseJSON(text){
+  const cleaned = (text || "").replace(/^\uFEFF/, "").trim(); // remove BOM
+
+  if (cleaned.startsWith("<!DOCTYPE") || cleaned.startsWith("<html") || cleaned.includes("<body")) {
+    throw new Error("Isso parece HTML, não JSON. Você copiou/selecionou a coisa errada.");
+  }
+  if (!(cleaned.startsWith("{") || cleaned.startsWith("["))) {
+    throw new Error("Conteúdo não parece JSON (não começa com { ou [).");
+  }
+  return JSON.parse(cleaned);
+}
+
 function importarArquivo(ev){
   const file = ev.target.files?.[0];
   if(!file) return;
@@ -841,12 +862,10 @@ function importarArquivo(ev){
       const obj = safeParseJSON(reader.result);
       importarObjeto(obj);
     }catch(e){
-      toast("Não consegui ler esse arquivo 😕", e.message || "Tenta usar 'colar JSON' ou reenviar como Documento.");
+      toast("Não consegui ler esse arquivo 😕", e.message || "Use Copiar/Colar (recomendado).");
     }
     ev.target.value = "";
   };
-
-  // força UTF-8
   reader.readAsText(file, "utf-8");
 }
 
@@ -858,7 +877,47 @@ function importarTexto(){
     importarObjeto(obj);
     document.getElementById("jsonText").value = "";
   }catch(e){
-    toast("Erro no JSON", e.message || "O texto não parece ser um JSON válido.");
+    toast("Erro no JSON", e.message || "Texto não é JSON válido.");
+  }
+}
+
+/* ========= NOVO: COPIAR / COLAR ========= */
+
+async function copiarBackup(){
+  try{
+    const payload = JSON.stringify(DB, null, 2);
+    await navigator.clipboard.writeText(payload);
+    toast("Copiado ✅", "Backup copiado. Agora cole no WhatsApp/Notas e leve pro celular.");
+  }catch(e){
+    // fallback: joga no textarea e seleciona
+    const ta = document.getElementById("jsonText");
+    if(ta){
+      ta.value = JSON.stringify(DB, null, 2);
+      ta.focus();
+      ta.select();
+      toast("Quase ✅", "Não consegui copiar automático. Já selecionei o texto — copie manualmente (Ctrl+C).");
+    }else{
+      toast("Erro", "Seu navegador bloqueou o copiar. Use Exportar JSON ou habilite permissões.");
+    }
+  }
+}
+
+async function colarEImportar(){
+  try{
+    const txt = await navigator.clipboard.readText();
+    if(!txt.trim()) return toast("Nada na área de transferência", "Copie o JSON no WhatsApp/Notas e tente de novo.");
+    const obj = safeParseJSON(txt);
+    importarObjeto(obj);
+    toast("Importado ✅", "Colagem importada com sucesso.");
+  }catch(e){
+    // fallback: usa o textarea se o navegador não deixar ler clipboard
+    const ta = document.getElementById("jsonText");
+    if(ta){
+      ta.focus();
+      toast("Cole aqui 👇", "Seu navegador bloqueou ler a área de transferência. Cole no campo e clique “Importar texto”.");
+    }else{
+      toast("Falhou 😕", e.message || "Cole no campo de texto e importe.");
+    }
   }
 }
 
